@@ -850,6 +850,24 @@
     return e;
   }
 
+  function scrollToCard(card){
+    var navWrap = document.querySelector(".ak-nav-wrap");
+    var offset = (navWrap ? navWrap.getBoundingClientRect().height : 0) + 10;
+    var y = Math.max(0, window.pageYOffset + card.getBoundingClientRect().top - offset);
+    try{ window.scrollTo({ top: y, behavior: "smooth" }); }catch(e){ window.scrollTo(0, y); }
+    // fallback: some mobile browsers no-op on programmatic smooth scroll
+    setTimeout(function(){
+      if(Math.abs(window.pageYOffset - y) > 4) window.scrollTo(0, y);
+    }, 450);
+  }
+
+  function scrollNavBtnIntoView(btn){
+    var nav = document.getElementById("akNav");
+    if(!nav || !btn) return;
+    var target = btn.offsetLeft - (nav.clientWidth - btn.offsetWidth) / 2;
+    try{ nav.scrollTo({ left: target, behavior: "smooth" }); }catch(e){ nav.scrollLeft = target; }
+  }
+
   function renderNav(){
     var nav = document.getElementById("akNav");
     var today = new Date();
@@ -863,8 +881,9 @@
       btn.addEventListener("click", function(){
         var card = document.getElementById(d.id);
         openCard(card, true);
-        card.scrollIntoView({behavior:"smooth", block:"start"});
         setActiveNav(d.id);
+        scrollNavBtnIntoView(btn);
+        scrollToCard(card);
       });
       nav.appendChild(btn);
     });
