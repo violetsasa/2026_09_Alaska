@@ -1,0 +1,1042 @@
+<title>NCL Bliss 阿拉斯加郵輪｜隨身查閱卡</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    color-scheme: light;
+    --paper: #eef1ee;
+    --paper-raised: #ffffff;
+    --ink: #17262a;
+    --ink-soft: #4c5c5a;
+    --accent: #1f6f78;
+    --accent-soft: #dceae7;
+    --line: #cbd9d4;
+    --line-strong: #9db3ac;
+    --ok: #3c7a4e;
+    --ok-soft: #e1efe3;
+    --pending: #9a7000;
+    --pending-soft: #f6ecd0;
+    --tip: #6a5a8c;
+    --tip-soft: #e9e4f2;
+    --warn: #b0403a;
+    --warn-soft: #f6e3e0;
+
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --font-body: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", "Segoe UI", sans-serif;
+
+    --radius: 14px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  .ak-app{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    max-width: 640px;
+    margin: 0 auto;
+    padding-bottom: 64px;
+  }
+
+  .ak-app :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ---------- Header ---------- */
+  .ak-header{
+    padding: 22px 18px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-raised);
+  }
+  .ak-eyebrow{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .ak-title{
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 8px;
+  }
+  .ak-route{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+  }
+  .ak-route .seg{ white-space: nowrap; }
+  .ak-route .icon{ width: 13px; height: 13px; color: var(--accent); }
+  .ak-subline{
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .ak-legend{
+    display: flex; flex-wrap: wrap; gap: 8px 12px;
+    margin-top: 10px; font-size: 10.5px; color: var(--ink-soft);
+  }
+  .ak-legend span{ display: inline-flex; align-items: center; gap: 4px; }
+  .ak-legend i{ width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .ak-legend .ok{ color: var(--ok); }
+  .ak-legend .pending{ color: var(--pending); }
+  .ak-legend .tip{ color: var(--tip); }
+  .ak-legend .warn{ color: var(--warn); }
+
+  /* ---------- Day nav (ticket stubs) ---------- */
+  .ak-nav-wrap{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--paper);
+    padding: 10px 0 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .ak-nav{
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 14px;
+    scroll-padding: 0 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ak-nav::-webkit-scrollbar{ display: none; }
+  .ak-nav-btn{
+    flex: 0 0 auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.2;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .ak-nav-btn .d{ font-weight: 700; font-size: 13px; color: var(--ink); }
+  .ak-nav-btn.active{
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .ak-nav-btn.active .d,
+  .ak-nav-btn.active{ color: #fff; }
+  .ak-nav-btn.today{ box-shadow: 0 0 0 2px var(--accent-soft); }
+
+  /* ---------- Section label ---------- */
+  .ak-section-label{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 20px 18px 8px;
+  }
+
+  /* ---------- Day cards (boarding-pass style) ---------- */
+  .ak-days{ padding: 6px 14px 4px; display: flex; flex-direction: column; gap: 14px; }
+
+  .ak-card{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    scroll-margin-top: 64px;
+  }
+
+  .ak-card-head{
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 14px 16px 14px;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    font-family: var(--font-body);
+    color: var(--ink);
+  }
+  .ak-card-date{
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.1;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .ak-card-date small{
+    display: block;
+    font-weight: 500;
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: .06em;
+  }
+  .ak-card-main{ min-width: 0; }
+  .ak-card-title{
+    font-weight: 700;
+    font-size: 14.5px;
+    margin: 0 0 2px;
+    text-wrap: balance;
+  }
+  .ak-card-loc{
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .ak-card-chevron{
+    width: 18px; height: 18px;
+    color: var(--ink-soft);
+    transition: transform .2s ease;
+    flex: 0 0 auto;
+  }
+  .ak-card.open .ak-card-chevron{ transform: rotate(180deg); }
+
+  .ak-badges{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 16px 12px;
+  }
+  .ak-badge{
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: .02em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+  .ak-badge.ok{ background: var(--ok-soft); color: var(--ok); }
+  .ak-badge.pending{ background: var(--pending-soft); color: var(--pending); }
+  .ak-badge.tip{ background: var(--tip-soft); color: var(--tip); }
+  .ak-badge.warn{ background: var(--warn-soft); color: var(--warn); }
+
+  .ak-highlights{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 16px 14px;
+  }
+  .ak-hl{
+    font-size: 11.5px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    padding: 3px 9px;
+    border-radius: 999px;
+  }
+
+  /* perforation seam */
+  .ak-seam{
+    position: relative;
+    height: 0;
+    border-top: 1.5px dashed var(--line-strong);
+    margin: 0 -1px;
+  }
+  .ak-seam::before, .ak-seam::after{
+    content: "";
+    position: absolute;
+    top: -8px;
+    width: 16px; height: 16px;
+    background: var(--paper);
+    border-radius: 50%;
+  }
+  .ak-seam::before{ left: -8px; }
+  .ak-seam::after{ right: -8px; }
+
+  .ak-card-body{
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .28s ease;
+  }
+  .ak-card.open .ak-card-body{ max-height: 4000px; }
+  @media (prefers-reduced-motion: reduce){
+    .ak-card-body{ transition: none; }
+  }
+  .ak-card-body-inner{ padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+
+  /* schedule manifest */
+  .ak-schedule{ display: flex; flex-direction: column; }
+  .ak-row{
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .ak-row:last-child{ border-bottom: none; }
+  .ak-row-time{
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    padding-top: 1px;
+  }
+  .ak-row.kind-warn .ak-row-time{ color: var(--warn); }
+  .ak-row.kind-tip .ak-row-time{ color: var(--tip); }
+  .ak-row-act{ font-size: 13.5px; font-weight: 600; }
+  .ak-row-note{ font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+  .ak-row.kind-warn{ border-left: 3px solid var(--warn); padding-left: 8px; margin-left: -11px; background: var(--warn-soft); border-radius: 0 8px 8px 0; }
+  .ak-row.kind-warn .ak-row-note{ color: #7c2f2a; }
+  .ak-row.kind-tip{ border-left: 3px solid var(--tip); padding-left: 8px; margin-left: -11px; background: var(--tip-soft); border-radius: 0 8px 8px 0; }
+
+  /* sights box */
+  .ak-box{
+    border: 1px dashed var(--line-strong);
+    border-radius: 10px;
+    padding: 12px 13px;
+  }
+  .ak-box-title{
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .ak-box-title .icon{ width: 13px; height: 13px; }
+  .ak-box ul{ margin: 0; padding-left: 18px; }
+  .ak-box li{ font-size: 12.5px; color: var(--ink-soft); margin-bottom: 5px; }
+  .ak-box li:last-child{ margin-bottom: 0; }
+  .ak-box.safety{ border-style: solid; border-color: var(--warn); background: var(--warn-soft); }
+  .ak-box.safety .ak-box-title{ color: var(--warn); }
+  .ak-box.safety li{ color: #6d2b26; }
+  .ak-box.options{ border-style: solid; border-color: var(--pending); background: var(--pending-soft); }
+  .ak-box.options .ak-box-title{ color: var(--pending); }
+  .ak-box.options li{ color: #6f4b1d; }
+
+  .ak-empty-note{ font-size: 12px; color: var(--ink-soft); font-style: italic; }
+
+  /* ---------- quick access ---------- */
+  .ak-today, .ak-quick-grid{ padding: 4px 14px 4px; }
+  .ak-today-card, .ak-quick-card{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px;
+  }
+  .ak-today-title{ font-size: 14px; font-weight: 800; margin: 0 0 8px; }
+  .ak-today-meta{ font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 8px; }
+  .ak-today-list{ margin: 0; padding-left: 18px; }
+  .ak-today-list li{ font-size: 12.5px; margin: 4px 0; }
+  .ak-quick-grid{ display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .ak-quick-card summary{ cursor: pointer; font-weight: 800; font-size: 13px; color: var(--ink); }
+  .ak-quick-card p, .ak-quick-card li{ font-size: 12.5px; color: var(--ink-soft); }
+  .ak-quick-card p{ margin: 9px 0 0; }
+  .ak-quick-card ul{ margin: 8px 0 0; padding-left: 18px; }
+  .ak-quick-card a{ color: var(--accent); font-weight: 700; }
+
+  /* ---------- reference stub cards ---------- */
+  .ak-ref-grid{ padding: 4px 14px 4px; display: flex; flex-direction: column; gap: 10px; }
+  .ak-ref{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .ak-ref-title{
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--accent);
+    margin: 0 0 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ak-ref-title .icon{ width: 14px; height: 14px; }
+  .ak-ref dl{ margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
+  .ak-ref dt{ font-size: 11.5px; color: var(--ink-soft); white-space: nowrap; }
+  .ak-ref dd{ margin: 0; font-size: 12.5px; font-weight: 600; }
+
+  /* ---------- checklist (manifest) ---------- */
+  .ak-check-tier{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin: 0 14px 14px;
+    overflow: hidden;
+  }
+  .ak-check-tier-head{
+    padding: 12px 16px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    border-bottom: 1px solid var(--line);
+    background: var(--accent-soft);
+  }
+  .ak-check-tier-head .tier{
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  .ak-check-tier-head .desc{ font-size: 12px; color: var(--ink-soft); }
+  .ak-check-list{ display: flex; flex-direction: column; }
+  .ak-check-item{
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 11px 16px;
+    min-height: 44px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    background: none;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+  }
+  .ak-check-item:last-child{ border-bottom: none; }
+  .ak-stamp{
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line-strong);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+    flex: 0 0 auto;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .ak-stamp .icon{ width: 12px; height: 12px; color: #fff; opacity: 0; transition: opacity .15s ease; }
+  .ak-check-item.checked .ak-stamp{ background: var(--ok); border-color: var(--ok); }
+  .ak-check-item.checked .ak-stamp .icon{ opacity: 1; }
+  .ak-check-text{ font-size: 13px; }
+  .ak-check-item.checked .ak-check-text{ color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--line-strong); }
+
+  .ak-footer{
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    padding: 24px 16px 8px;
+    font-family: var(--font-mono);
+  }
+
+  .icon{ width: 16px; height: 16px; display: inline-block; vertical-align: -3px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+</style>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" stroke-width="2.4"><polyline points="5 13 10 18 19 7"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><polygon points="12 3 22 20 2 20"/><line x1="12" y1="9" x2="12" y2="14"/><circle cx="12" cy="17" r="0.6" fill="currentColor"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M3 13l8-2 6-8 2 1-4 8 5 3v2l-6-1-3 5-2-1 1-5-7 1z"/></symbol>
+    <symbol id="i-ship" viewBox="0 0 24 24"><path d="M4 14h16l-2 6H6z"/><path d="M8 14V6h5l3 8"/><line x1="12" y1="3" x2="12" y2="6"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16V12l2-5h12l2 5v4"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5c3-1 6-1 8 0v14c-2-1-5-1-8 0z"/><path d="M20 5c-3-1-6-1-8 0v14c2-1 5-1 8 0z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-7.5 7-12a7 7 0 0 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12l9-9h7v7l-9 9z"/><circle cx="15.5" cy="8.5" r="1.4"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 0 1 2-2h5v4"/><path d="M3 15h18v3"/><path d="M12 13h7a2 2 0 0 1 2 2v3"/><circle cx="6.5" cy="10" r="1.4"/></symbol>
+  </defs>
+</svg>
+
+<div class="ak-app">
+  <header class="ak-header">
+    <div class="ak-eyebrow"><svg class="icon"><use href="#i-ship"/></svg> NCL BLISS · 隨身查閱卡</div>
+    <h1 class="ak-title">阿拉斯加郵輪 2026</h1>
+    <div class="ak-route">
+      <span class="seg">TPE</span>
+      <svg class="icon"><use href="#i-plane"/></svg>
+      <span class="seg">SEA</span>
+      <svg class="icon"><use href="#i-ship"/></svg>
+      <span class="seg">Juneau·Skagway·Glacier Bay·Ketchikan·Victoria</span>
+      <svg class="icon"><use href="#i-plane"/></svg>
+      <span class="seg">TPE</span>
+    </div>
+    <p class="ak-subline">9/17–9/28｜郵輪航段 9/19–9/26｜艙房 Deck 10</p>
+    <div class="ak-legend" aria-label="資訊標籤說明"><span class="ok"><i></i>已確認</span><span class="pending"><i></i>待確認</span><span class="tip"><i></i>提醒／建議</span><span class="warn"><i></i>重要</span></div>
+  </header>
+
+  <div class="ak-nav-wrap">
+    <nav class="ak-nav" id="akNav" aria-label="日期導覽"></nav>
+  </div>
+
+  <div class="ak-section-label">每日行程</div>
+  <div class="ak-today" id="akToday"></div>
+  <div class="ak-days" id="akDays"></div>
+
+  <div class="ak-section-label">住宿／登船快速查閱</div>
+  <div class="ak-quick-grid">
+    <details class="ak-quick-card">
+      <summary>Fremont 住宿｜入住與 Wi‑Fi</summary>
+      <p>9/17 15:00 後入住；門鎖開法與 Wi‑Fi 密碼見訂房訊息（不對外公開）。門鎖密碼僅在入住日 15:00 至退房日 11:00 有效。</p>
+      <ul><li>室內禁菸、進屋脫鞋、22:00 後降低音量。</li><li>離開前：浴室地板集中毛巾、確認鎖門；不必洗床單或倒垃圾。</li></ul>
+    </details>
+    <details class="ak-quick-card">
+      <summary>9/19 登船｜先還車再寄行李</summary>
+      <ul><li>09:00 SIXT（200 Pike St）還車為硬時間。</li><li>還車後搭計程車到 Pier 66（2225 Alaskan Way）寄放已貼 NCL 行李條的託運行李。</li><li>eDocs 指定抵達碼頭時段 <strong>9:30–10:00</strong>；12:00 開放登船；<strong>14:00（開航前 2 小時）前務必上船</strong>。</li><li>護照、eDocs、藥品、行動電源與值錢物品全程隨身。</li></ul>
+    </details>
+    <details class="ak-quick-card">
+      <summary>憑證與離線備份</summary>
+      <ul><li>機票、SIXT、住宿、郵輪、岸上觀光與 eSIM 請各存一份離線副本。</li><li>登船日另備紙本 eDocs／行李條。</li></ul>
+    </details>
+  </div>
+
+  <div class="ak-section-label">常用資訊</div>
+  <div class="ak-ref-grid" id="akRefs"></div>
+
+  <div class="ak-section-label">出發前待辦</div>
+  <div id="akChecklist"></div>
+
+  <div class="ak-footer">公開精簡版（已移除個人與訂位資訊）· 點日期跳轉 · 待辦可勾選（存在本機瀏覽器）</div>
+</div>
+
+<script>
+(function(){
+  var K = "warn", T = "tip", O = "ok", P = "pending";
+
+  var DAYS = [
+    {
+      id: "d0917", date: "9/17", dow: "四", month: 9, day: 17,
+      title: "UW、Northgate 購物、Gas Works 天際線", loc: "台北 → Seattle（落地日）",
+      badges: [[O,"航班/住宿/租車 已訂"]],
+      hl: ["DL068 06:00 抵達", "SIXT 09:00 取車", "Gas Works 日落"],
+      schedule: [
+        ["TPE 06:00","Trip.com 接送：住家 → TPE T2","已訂購；含 TPE T2 東方宇逸貴賓室",""],
+        ["09:50","DL068 由 TPE 起飛","經濟艙・A350・含餐",""],
+        ["SEA 06:00","抵達 Seattle（同日）","入境、領行李",""],
+        ["09:00","SIXT 取車","SEA Rental Car Center，詳見下方租車卡",K],
+        ["10:00","抵達住宿寄放行李","先告知房東預計時間",""],
+        ["10:15","UW 校園","先直奔 Suzzallo Reading Room；🅿️ Central Plaza Garage：US$5／小時，C02–C04，PayByPhone（123211）或自助機",P],
+        ["12:00","午餐：Local Point","訪客付費方式與定價待出發前確認",P],
+        ["12:50","University Village","免費客用停車場／車庫，抓 1–1.5 小時",""],
+        ["14:25","Target ＋ Best Buy（Northgate）","免費客用停車，約 80 分鐘；以入口標示為準",""],
+        ["15:55","TJ Maxx（Northgate Village）","免費客用停車；僅購物期間停放、留意現場告示",""],
+        ["18:40","Gas Works Park 看天際線","步行約 12 分鐘，日落約 19:10",""],
+        ["晚餐","Dick's Drive-In → Molly Moon's","西雅圖漢堡地標＋手工冰淇淋創始店",""]
+      ],
+      sights: [
+        "Suzzallo Reading Room 挑高逾 20 公尺，暱稱「霍格華茲圖書館」",
+        "University Village 1956 年開幕，僅晚迪士尼樂園一年",
+        "TJ Maxx／Target／Best Buy 都是美國家喻戶曉的連鎖，逛法像挖寶"
+      ],
+      safety: ["開車全程不進市中心", "每次離車前清空可見物品，行李只放後車廂"]
+    },
+    {
+      id: "d0918", date: "9/18", dow: "五", month: 9, day: 18,
+      title: "Boeing、Pike Place、太空針塔", loc: "Seattle 市區徒步日",
+      badges: [[O,"Boeing / SIXT / 太空針塔 已訂"]],
+      hl: ["Boeing 10:00", "住宿停車＋Uber", "太空針塔 18:00"],
+      schedule: [
+        ["09:30","Boeing Tour 報到","逾 10:00 未到場票券直接作廢",K],
+        ["10:00","Boeing Factory Tour","訂單號見信箱，約 80 分鐘",""],
+        ["11:20","早午餐：Paper Plane Café","Future of Flight 館內；Ivar's 蛤蜊濃湯",""],
+        ["12:00","開回住宿停車","優先停屋主允許的車道；不留可見物品，下午不再開進市中心",K],
+        ["12:50","Uber 前往 Pike Place Market","直接下車進市場，免找車位、付停車費與晚間取車",""],
+        ["13:15","Pike Place Chowder","先於官網 online order 再取餐",T],
+        ["13:50","市場核心逛完","Piroshky、第一家星巴克／拋魚秀、Beecher's、口香糖牆、Waterfront",""],
+        ["15:20","King Street Station 拍火車","1906 年車站大廳",""],
+        ["16:00","Pioneer Square 散步","最晚 16:45 叫車前往 Seattle Center",K],
+        ["16:45","Uber 前往 Seattle Center","不取車、不進停車場，直接開始晚間行程",""],
+        ["17:05","Monorail 來回體驗","Westlake ↔ Seattle Center",""],
+        ["17:25","晚餐：Skillet: Counter","已訂 18:00 入場；到店即點、控制在 20 分鐘內",""],
+        ["17:45","前往太空針塔入口","Caffè Vita 改為有時間才外帶；繞塔基外側至主入口坡道",K],
+        ["17:55","安檢與入場","依票券指定 18:00 抵達；訂單號見信箱",O],
+        ["18:00","太空針塔上塔","已訂；傍晚、日落與夜景，入場後可留至當日關門",O],
+        ["20:30","Uber 回住宿","租車全天停在住宿車道，免市區取車",""]
+      ],
+      sights: [
+        "Boeing Everett 廠房是全球體積最大的單棟建築",
+        "Pike Place 魚販會拋接整條鮭魚；1971 年第一家星巴克就藏在市場角落",
+        "King Street Station 鐘塔仿威尼斯聖馬可廣場鐘樓，1906 年曾是西雅圖最高建築"
+      ],
+      safety: [
+        "前往 Pike Place 避開 3rd Ave 的 Pine–Pike 路段，白天快速通過",
+        "Pioneer Square 日落前完成，結束後叫車往 Seattle Center，不往 International District 延伸",
+        "租車下午停在住宿車道；離車前仍清空所有可見物品"
+      ]
+    },
+    {
+      id: "d0919", date: "9/19", dow: "六", month: 9, day: 19,
+      title: "還車、寄行李、登船", loc: "Seattle → 登船",
+      badges: [[O,"郵輪 / Le Bistro / SIXT 還車 已訂"],[O,"Pier 66 寄放行李 已確認"]],
+      hl: ["09:00 還車", "9:30–10:00 抵達碼頭", "16:00 離港"],
+      schedule: [
+        ["07:00","起床、退房、行李分流","護照/藥品/行動電源等隨身，不托運",K],
+        ["07:40","前往 SIXT 還車","200 Pike St；先加滿油，預留市區車流與找入口時間",K],
+        ["09:00","SIXT 還車","拍車身、油量、里程與收據後，確認隨身物品全數帶走",K],
+        ["09:00","計程車前往 Pier 66","2225 Alaskan Way；還車後不再保留車輛，避免時間壓力",""],
+        ["9:30–10:00","抵達 Pier 66、寄放託運行李","eDocs 指定抵達時段；僅交已貼 NCL 行李條的行李，護照與值錢物品絕不交出去",K],
+        ["10:00–11:45","Nordstrom 旗艦店／Westlake","時間有餘再逛，只逛想買的樓層；不早於指定時段前往碼頭",""],
+        ["12:00","開放登船","出示護照與 eDocs",""],
+        ["13:00","Garden Café 自助餐","登船後第一頓正餐",""],
+        ["14:00","All Aboard","開航前 2 小時，務必已在船上",K],
+        ["16:00","Norwegian Bliss 離港","",""],
+        ["18:45","Le Bistro（Deck 17）","",O]
+      ],
+      sights: [],
+      safety: ["eDocs 指定抵達碼頭時段為 9:30–10:00，早到會被請回；12:00 開放登船，14:00（開航前 2 小時）前務必上船。以 09:00 還車為硬時間，完成後直接搭計程車前往 Pier 66。"]
+    },
+    {
+      id: "d0920", date: "9/20", dow: "日", month: 9, day: 20,
+      title: "海上航行日", loc: "Inside Passage",
+      badges: [[O,"Cagney's 已訂"],[P,"The Local 早餐待確認"]],
+      hl: ["熟悉船上動線", "19:15 Cagney's"],
+      schedule: [
+        ["早餐","The Local Bar & Grill","以當航次菜單與時段為準",P],
+        ["上午","Observation Lounge","熟悉 Glacier Bay 觀景動線",""],
+        ["午餐","Taste","",""],
+        ["19:15","Cagney's Steakhouse（Deck 8）","",O],
+        ["晚間","查看隔日 Freestyle Daily","確認 Juneau 下船口與天候",""]
+      ],
+      sights: ["船行 Inside Passage 內航道，避開太平洋洋流"],
+      safety: ["這天浪況最不穩定，暈船藥今天就先服用，不要等到不舒服才吃"]
+    },
+    {
+      id: "d0921", date: "9/21", dow: "一", month: 9, day: 21,
+      title: "Juneau · Mendenhall Glacier", loc: "Juneau",
+      badges: [[O,"官方行程 JNUN55 已訂"]],
+      hl: ["14:30 靠港", "市區短逛購物", "16:30 出發"],
+      schedule: [
+        ["早餐","Garden Café 快速早餐","午餐視 American Diner 營業狀況調整",""],
+        ["午餐","American Diner","須確認當日午餐營業",P],
+        ["14:30","靠港，依開放時間下船","靠港不等於可下船，排隊約 30–60 分鐘",K],
+        ["下船後－15:40","碼頭／South Franklin Street 短逛購物","看港景、買紀念品；Tracy's 無需排隊才外帶小點",K],
+        ["15:40","前往岸上行程集合點","停止購物，保留步行與集合緩衝",K],
+        ["16:30","Mendenhall Glacier Explorer 出發","憑證行程時段 16:30–19:30，交通由 NCL 安排",O],
+        ["19:30","跟團返回碼頭","憑證所載結束時間",""],
+        ["20:00","確認已回船","保守回船目標；Juneau 22:00 離港，正式 All Aboard 以 Freestyle Daily 為準",K]
+      ],
+      sights: [
+        "Juneau 是全美唯一無法開車抵達的州府",
+        "Mendenhall Glacier 自小冰期以來已退縮超過 3 公里",
+        "South Franklin Street：碼頭旁的短逛購物主線；找 Silver Hand 標誌的阿拉斯加原民藝術品"
+      ],
+      options: [
+        "Tracy's：完全不用排隊才外帶蟹湯／小點",
+        "The Hangar：真有 45–60 分鐘坐下用餐才考慮",
+        "Twisted Fish：岸上行程明顯提早回來才考慮晚餐"
+      ],
+      safety: ["不走上冰川或自行尋找冰洞，遵守導遊指示"]
+    },
+    {
+      id: "d0922", date: "9/22", dow: "二", month: 9, day: 22,
+      title: "Skagway · White Pass Railway", loc: "Skagway",
+      badges: [[O,"官方行程 SGYN40 已訂"]],
+      hl: ["06:00 靠港", "07:30 出發（約 8h15m）", "20:00 離港"],
+      schedule: [
+        ["05:45","起床，確認已靠港","雨具、護照、行程票、行動電源隨身",K],
+        ["06:30","Garden Café 快速早餐","07:30 岸上行程，用餐後直接前往集合點",""],
+        ["07:30","White Pass Railway & Yukon Expedition","巴士去程、火車回程都優先坐右側靠窗",O],
+        ["18:30","回船","",""],
+        ["20:00","離港","",""]
+      ],
+      sights: [
+        "1897 年 Klondike 黃金消息 24 小時內傳遍全美",
+        "White Pass 鐵路 1898 年動工，工人手工鑿出懸崖路基"
+      ],
+      options: [
+        "Red Onion：1898 歷史酒館／博物館；想看故事或拍照",
+        "Skagway Brewing：精釀＋正餐；需 45–60 分鐘",
+        "The Station：在地家常餐廳；fish & chips／披薩",
+        "Weenie Wagon：馴鹿香腸；想快速吃特色，先確認是否仍營業",
+        "Skagway Fish Company：Railroad Dock 旁海鮮；停靠此碼頭最順路"
+      ],
+      safety: ["跨境進入加拿大 Yukon，兩人均須隨身攜帶護照正本；陸路不需 eTA"]
+    },
+    {
+      id: "d0923", date: "9/23", dow: "三", month: 9, day: 23,
+      title: "Glacier Bay National Park", loc: "國家公園觀景巡航",
+      badges: [[O,"Le Bistro 已訂"]],
+      hl: ["全天觀景", "19:15 Le Bistro"],
+      schedule: [
+        ["清晨","查看 ranger 登船與進灣時間","以 App／Freestyle Daily 為準",""],
+        ["早餐","Garden Café 外帶","帶往 Observation Lounge",""],
+        ["上午","Observation Lounge 建立據點","輪流到戶外甲板",""],
+        ["下午","Deck 8 Waterfront 換邊追景","依廣播調整",""],
+        ["19:15","Le Bistro（Deck 17）","",O]
+      ],
+      sights: [
+        "1750 年整個灣區被厚達 1,500 公尺的冰川覆蓋，250 年退縮 100 公里",
+        "船可能靠近 Margerie Glacier 到只剩幾百公尺，能聽見冰裂聲"
+      ],
+      safety: ["手機、相機電池低溫耗電快，行動電源放貼身口袋"]
+    },
+    {
+      id: "d0924", date: "9/24", dow: "四", month: 9, day: 24,
+      title: "Ketchikan · Ward Cove", loc: "Ward Cove",
+      badges: [[O,"官方行程 KTNN04 已訂"]],
+      hl: ["07:00 靠港", "07:30 出發（3h15m）", "13:15 離港"],
+      schedule: [
+        ["06:00","起床","雨具、防水鞋、望遠鏡、防蚊隨身",""],
+        ["06:30","Garden Café 快速早餐","",""],
+        ["07:30","Rainforest Sanctuary & Totem Park","約 3 小時 15 分",O],
+        ["13:15","離港","無彈性，不安排市區快閃",K],
+        ["晚餐","Savor","",""]
+      ],
+      sights: [
+        "年降雨量超過 150 英吋，幾乎是台北兩倍",
+        "Tlingit 族圖騰柱是視覺語言刻寫的族譜"
+      ],
+      safety: ["遵守導遊指示，不離開步道或接近動物"]
+    },
+    {
+      id: "d0925", date: "9/25", dow: "五", month: 9, day: 25,
+      title: "Victoria 夜遊", loc: "Victoria, BC",
+      badges: [[O,"官方行程 VICN61 已訂"]],
+      hl: ["18:00 提早晚餐", "20:30 夜遊"],
+      schedule: [
+        ["早餐","Garden Café","",""],
+        ["午餐","American Diner","須確認當日午餐營業",P],
+        ["下午","整理行李、確認標籤與帳單","最後一晚重要物品不托運",K],
+        ["18:00","The Local 提早吃晚餐","不等夜遊後才找完整晚餐",K],
+        ["20:30","Victoria Highlights By Night","約 2 小時 30 分",O],
+        ["23:59","離港","",""]
+      ],
+      sights: [
+        "加拿大最像英國的城市，連口音都帶英式腔調",
+        "Parliament Buildings 入夜亮起超過 3,300 顆燈泡"
+      ],
+      safety: ["本航程由海路進入加拿大，護照隨身"]
+    },
+    {
+      id: "d0926", date: "9/26", dow: "六", month: 9, day: 26,
+      title: "下船、航空博物館、Southcenter、球賽", loc: "Seattle",
+      badges: [[O,"住宿 / 行李寄放 / 球票 已訂"]],
+      hl: ["07:00 靠港", "Museum of Flight", "18:40 開賽"],
+      schedule: [
+        ["07:00","靠港","",""],
+        ["08:00","依下船組別離船、領行李","",""],
+        ["09:00","Uber 前往 Sleep Inn 寄放行李","約 30–45 分鐘",""],
+        ["11:00","The Museum of Flight","核心展區：空軍一號／SR-71／協和號",""],
+        ["12:25","Wings Café 午餐","館內快速餐點，補看展區後前往 Southcenter",""],
+        ["13:30","Southcenter 購物（僅 Macy's）","其餘品牌已在別處安排",""],
+        ["15:00","Sleep Inn 辦理入住","",""],
+        ["16:45","前往 T-Mobile Park","場內解決晚餐：Rolling Smoke BBQ ＋ Garlic Fries",""],
+        ["18:40","Mariners 對 Angels","Section 332・Row 16・Seat 1–2",O],
+        ["賽後","1 Line 到 Angle Lake","出站直接叫車回 Sleep Inn，勿步行",K]
+      ],
+      sights: [
+        "館內的空軍一號（VC-137C）真的載過甘迺迪、詹森、尼克森等總統",
+        "T-Mobile Park 可收合屋頂因西雅圖秋雨而生（1999 年）"
+      ],
+      safety: ["Bag Policy：透明袋限 12\"×6\"×12\"，出發前再查 MLB App"]
+    },
+    {
+      id: "d0927", date: "9/27", dow: "日", month: 9, day: 27,
+      title: "SEA 機場、返回台北", loc: "Seattle → 台北",
+      badges: [[O,"DL069 / 住宿 已訂"]],
+      hl: ["12:00 退房", "16:00 起飛"],
+      schedule: [
+        ["12:00","Sleep Inn 退房","",""],
+        ["12:30","前往 SEA、辦理國際線報到","預留約 3 小時",""],
+        ["13:15","THE Club SEA 貴賓室","",""],
+        ["16:00","DL069 由 SEA 起飛","經濟艙・A350・含餐",""]
+      ],
+      sights: [],
+      safety: []
+    },
+    {
+      id: "d0928", date: "9/28", dow: "一", month: 9, day: 28,
+      title: "抵達台北", loc: "台北",
+      badges: [[O,"已確認"]],
+      hl: ["19:55 抵達 TPE T2"],
+      schedule: [["19:55","DL069 抵達 TPE 桃園機場 T2","",""]],
+      sights: [], safety: []
+    }
+  ];
+
+  var REFS = [
+    {icon:"i-tag", title:"NCL 岸上行程（SHOREX）", rows:[
+      ["Juneau","JNUN55 · Mendenhall Glacier Explorer"],
+      ["Skagway","SGYN40 · White Pass Railway & Yukon Expedition"],
+      ["Ketchikan","KTNN04 · Rainforest Sanctuary & Totem Park"],
+      ["Victoria BC","VICN61 · Victoria Highlights By Night"]
+    ]},
+    {icon:"i-car", title:"租車｜SIXT", rows:[
+      ["取車","9/17 09:00・SEA Rental Car Center"],
+      ["還車","9/19 09:00・200 Pike St"],
+      ["車型","Fullsize 轎車，自排，5 人座"],
+      ["費用","USD 218.97 ＋ USD 200 押金預授權"],
+      ["證件","兩位駕駛均帶台灣駕照正本＋護照正本，英文姓名須一致；國際駕照已辦妥（效期至 2029/07 底），一併攜帶為輔助文件"],
+      ["注意","不用走收費橋或隧道，不用加購 toll pass"]
+    ]},
+    {icon:"i-bed", title:"住宿｜Fremont（9/17–9/19）", rows:[
+      ["區域","Fremont / Wallingford 一帶"],
+      ["入住/退房","9/17 15:00 後・9/19 12:00 前"],
+      ["門鎖／Wi‑Fi","見訂房訊息（不對外公開）"],
+      ["備註","進屋脫鞋、室內禁菸、22:00 後降低音量"]
+    ]},
+    {icon:"i-bed", title:"住宿｜Sleep Inn Sea Tac（9/26–9/27）", rows:[
+      ["地址","20406 International Blvd, SeaTac"],
+      ["入住/退房","9/26 15:00 後・9/27 12:00 前"],
+      ["含","免費 Wi‑Fi、早餐"],
+      ["機場接駁","免費但無公開班表，9/26 入住時向櫃檯確認"]
+    ]},
+    {icon:"i-tag", title:"證件｜ESTA", rows:[
+      ["狀態","兩人皆已核准"],
+      ["效期","至 2028/08/01"],
+      ["備註","申請號／護照號見離線文件"]
+    ]},
+    {icon:"i-book", title:"保險｜World Nomads", rows:[
+      ["保障期間","9/17－9/28 2026（兩人合併）"],
+      ["海外醫療","Unlimited（含 COVID-19，依條款）"],
+      ["緊急聯絡","+353 21 237 8009／8003・assist@worldnomads.com"],
+      ["備註","保單號見離線文件"]
+    ]},
+    {icon:"i-book", title:"保險｜台灣產物", rows:[
+      ["保障期間","9/17 05:00－9/29 05:00"],
+      ["醫療／後送","US$6,534 醫療・US$26,135－49,004 後送"],
+      ["緊急聯絡","International SOS +886-2-6619-9205"],
+      ["備註","保單號見離線文件"]
+    ]},
+    {icon:"i-tag", title:"eSIM（已購買、已兌換）", rows:[
+      ["旅客 A","美國 11 天 3GB/日＋全球 5 天 3GB"],
+      ["旅客 B","美國 11 天 3GB/日＋加拿大 1 天 1GB＋全球 2 天 2GB"],
+      ["啟用期限","美國／加拿大方案須於 2026/10/14 前啟用"]
+    ]}
+  ];
+
+  var CHECKLIST = [
+    { tier:"打包", desc:"出發前物品檢查清單", items:[
+      "證件：護照正本×2（效期要求見七、證件）、健保卡＋兩吋證件照2張、台灣駕照正本×2、國際駕照×2（效期至2029/7底）",
+      "財務：信用卡（依個人清單全帶）、國際提款卡、小額美金現金 USD 50–100",
+      "文件：ESTA 核准畫面、旅遊保險保單、eDocs／行李條／岸上行程憑證／住宿與租車訂單",
+      "電子：手機、手機掛繩、eSIM 已安裝確認（落地前才啟用，啟用碼另印紙本備援）、延長線／插頭（無突波保護）、充電線、行動電源",
+      "健康：醫療包（處方藥原包裝、暈船藥、腸胃藥、備用眼鏡）",
+      "衣著：防水外套、防水鞋、免洗襪子及內褲、太陽眼鏡、泳衣泳帽、望遠鏡、防水袋／夾鏈袋",
+      "服裝：Le Bistro／Cagney's 正式一點服裝",
+      "球賽：9/26 用透明袋（12\"×6\"×12\" 以內，符合 T-Mobile Park Bag Policy）"
+    ]},
+    { tier:"P2", desc:"出發前 30–60 天", items:[
+      "已完成：9/18 Space Needle 門票（18:00 入場・2 張 Regular）",
+      "線上購買 9/26 Museum of Flight 門票",
+      "護照效期、信用卡海外交易、處方藥原包裝確認",
+      "告知房東 9/17 取車與抵達時間",
+      "確認住宿扣款完成",
+      "安排支付 NCL 每日服務費（USD 280）"
+    ]},
+    { tier:"P3", desc:"出發前 21 天內", items:[
+      "完成 NCL Online Check-in、下載 eDocs／行李條與 App；確認碼頭、指定登船時段，以及 9/19 SIXT 還車 → 計程車至 Pier 66 寄行李 → 回碼頭時間",
+      "查 Seattle Monorail 施工期間動線",
+      "查 UW Suzzallo Library 9/17 開放時間",
+      "下載離線地圖，補齊 eDocs／住宿／岸上行程憑證的離線副本與紙本"
+    ]},
+    { tier:"船上", desc:"上船後第一天", items:[
+      "取得岸上行程憑證，確認集合地點與時間",
+      "完成安全集合站程序，記住艙房位置與逃生路線",
+      "確認 Le Bistro／Cagney's 訂位",
+      "查 9/25 American Diner 是否供午餐",
+      "設定 Wi-Fi 並練習正確 logout",
+      "找到 Observation Lounge、Waterfront 與集合區"
+    ]}
+  ];
+
+  var badgeIcon = { ok:"i-check", pending:"i-tag", tip:"i-book", warn:"i-warn" };
+  var kindMap = { ok:"ok", pending:"pending", tip:"tip", warn:"warn" };
+
+  function el(tag, cls, html){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(html !== undefined) e.innerHTML = html;
+    return e;
+  }
+
+  function renderNav(){
+    var nav = document.getElementById("akNav");
+    var today = new Date();
+    var isTripYear = today.getFullYear() === 2026 && today.getMonth() === 8; // Sept = index 8
+    DAYS.forEach(function(d){
+      var btn = el("button", "ak-nav-btn");
+      btn.id = "nav-" + d.id;
+      var isToday = isTripYear && today.getDate() === d.day;
+      if(isToday) btn.classList.add("today");
+      btn.innerHTML = '<span class="d">'+d.date+'</span><span>'+d.dow+'</span>';
+      btn.addEventListener("click", function(){
+        var card = document.getElementById(d.id);
+        openCard(card, true);
+        card.scrollIntoView({behavior:"smooth", block:"start"});
+        setActiveNav(d.id);
+      });
+      nav.appendChild(btn);
+    });
+  }
+
+  function renderToday(){
+    var wrap = document.getElementById("akToday");
+    var now = new Date();
+    var tripStart = new Date(2026, 8, 17);
+    var tripEnd = new Date(2026, 8, 29);
+    var inTrip = now >= tripStart && now < tripEnd;
+    var today = inTrip ? DAYS.find(function(d){ return now.getFullYear() === 2026 && now.getMonth() === 8 && now.getDate() === d.day; }) : null;
+    if(!today) today = now < tripStart ? DAYS[0] : DAYS[DAYS.length - 1];
+    var card = el("section", "ak-today-card");
+    var label = "今天必做";
+    if(now < tripStart){
+      var daysLeft = Math.ceil((tripStart - now) / 86400000);
+      label = '距出發還有 ' + daysLeft + ' 天';
+    }else if(now >= tripEnd){ label = '行程已結束'; }
+    card.innerHTML = '<p class="ak-today-title">'+label+'</p><div class="ak-today-meta">'+today.date+'（'+today.dow+'）｜'+today.title+'</div>';
+    var list = el("ul", "ak-today-list");
+    today.schedule.slice(0, 4).forEach(function(row){
+      if(row[1]) list.appendChild(el("li", null, '<strong>'+row[0]+'</strong>　'+row[1]));
+    });
+    card.appendChild(list);
+    wrap.appendChild(card);
+  }
+
+  function setActiveNav(id){
+    DAYS.forEach(function(d){
+      document.getElementById("nav-"+d.id).classList.toggle("active", d.id === id);
+    });
+  }
+
+  function openCard(card, open){
+    card.classList.toggle("open", open);
+    var head = card.querySelector(".ak-card-head");
+    if(head) head.setAttribute("aria-expanded", String(open));
+  }
+
+  function renderDays(){
+    var wrap = document.getElementById("akDays");
+    DAYS.forEach(function(d){
+      var card = el("article", "ak-card");
+      card.id = d.id;
+
+      var head = el("button", "ak-card-head");
+      head.setAttribute("aria-expanded", "false");
+      head.innerHTML =
+        '<div class="ak-card-date">'+d.date+'<small>週'+d.dow+'</small></div>' +
+        '<div class="ak-card-main"><p class="ak-card-title">'+d.title+'</p><p class="ak-card-loc">'+d.loc+'</p></div>' +
+        '<svg class="icon ak-card-chevron"><use href="#i-chevron"/></svg>';
+      head.addEventListener("click", function(){
+        var willOpen = !card.classList.contains("open");
+        openCard(card, willOpen);
+        if(willOpen) setActiveNav(d.id);
+      });
+      card.appendChild(head);
+
+      var badges = el("div", "ak-badges");
+      d.badges.forEach(function(b){
+        badges.appendChild(el("span", "ak-badge "+b[0], '<svg class="icon" style="width:11px;height:11px"><use href="#'+badgeIcon[b[0]]+'"/></svg>'+b[1]));
+      });
+      card.appendChild(badges);
+
+      var hl = el("div", "ak-highlights");
+      d.hl.forEach(function(h){ hl.appendChild(el("span", "ak-hl", h)); });
+      card.appendChild(hl);
+
+      card.appendChild(el("div", "ak-seam"));
+
+      var body = el("div", "ak-card-body");
+      var inner = el("div", "ak-card-body-inner");
+
+      var sched = el("div", "ak-schedule");
+      d.schedule.forEach(function(r){
+        var kind = r[3] ? kindMap[r[3]] : "";
+        var row = el("div", "ak-row" + (kind ? " kind-"+kind : ""));
+        row.innerHTML =
+          '<div class="ak-row-time">'+(r[0]||"")+'</div>' +
+          '<div><div class="ak-row-act">'+r[1]+'</div>' + (r[2] ? '<div class="ak-row-note">'+r[2]+'</div>' : '') + '</div>';
+        sched.appendChild(row);
+      });
+      inner.appendChild(sched);
+
+      if(d.sights.length){
+        var sBox = el("div", "ak-box");
+        sBox.innerHTML = '<div class="ak-box-title"><svg class="icon"><use href="#i-book"/></svg>當日看點</div>';
+        var ul = el("ul");
+        d.sights.forEach(function(s){ ul.appendChild(el("li", null, s)); });
+        sBox.appendChild(ul);
+        inner.appendChild(sBox);
+      }
+
+      if(d.options && d.options.length){
+        var oBox = el("div", "ak-box options");
+        oBox.innerHTML = '<div class="ak-box-title"><svg class="icon"><use href="#i-tag"/></svg>備選</div>';
+        var ul3 = el("ul");
+        d.options.forEach(function(o){ ul3.appendChild(el("li", null, o)); });
+        oBox.appendChild(ul3);
+        inner.appendChild(oBox);
+      }
+
+      if(d.safety.length){
+        var wBox = el("div", "ak-box safety");
+        wBox.innerHTML = '<div class="ak-box-title"><svg class="icon"><use href="#i-warn"/></svg>安全與提醒</div>';
+        var ul2 = el("ul");
+        d.safety.forEach(function(s){ ul2.appendChild(el("li", null, s)); });
+        wBox.appendChild(ul2);
+        inner.appendChild(wBox);
+      }
+
+      body.appendChild(inner);
+      card.appendChild(body);
+      wrap.appendChild(card);
+    });
+  }
+
+  function renderRefs(){
+    var wrap = document.getElementById("akRefs");
+    REFS.forEach(function(r){
+      var box = el("div", "ak-ref");
+      var title = el("p", "ak-ref-title", '<svg class="icon"><use href="#'+r.icon+'"/></svg>'+r.title);
+      box.appendChild(title);
+      var dl = el("dl");
+      r.rows.forEach(function(row){
+        dl.appendChild(el("dt", null, row[0]));
+        dl.appendChild(el("dd", null, row[1]));
+      });
+      box.appendChild(dl);
+      wrap.appendChild(box);
+    });
+  }
+
+  function renderChecklist(){
+    var wrap = document.getElementById("akChecklist");
+    var saved = {};
+    try{ saved = JSON.parse(localStorage.getItem("akChecklistState") || "{}"); }catch(e){}
+
+    CHECKLIST.forEach(function(tier, ti){
+      var box = el("div", "ak-check-tier");
+      var head = el("div", "ak-check-tier-head");
+      head.innerHTML = '<span class="tier">'+tier.tier+'</span><span class="desc">'+tier.desc+'</span>';
+      box.appendChild(head);
+      var list = el("div", "ak-check-list");
+      tier.items.forEach(function(text, ii){
+        var itemId = "chk-"+ti+"-"+ii;
+        var checked = !!saved[itemId];
+        var item = el("button", "ak-check-item" + (checked ? " checked" : ""));
+        item.setAttribute("type", "button");
+        item.setAttribute("aria-pressed", String(checked));
+        item.innerHTML =
+          '<span class="ak-stamp"><svg class="icon"><use href="#i-check"/></svg></span>' +
+          '<span class="ak-check-text">'+text+'</span>';
+        item.addEventListener("click", function(){
+          var nowChecked = !item.classList.contains("checked");
+          item.classList.toggle("checked", nowChecked);
+          item.setAttribute("aria-pressed", String(nowChecked));
+          saved[itemId] = nowChecked;
+          try{ localStorage.setItem("akChecklistState", JSON.stringify(saved)); }catch(e){}
+        });
+        list.appendChild(item);
+      });
+      box.appendChild(list);
+      wrap.appendChild(box);
+    });
+  }
+
+  renderToday();
+  renderNav();
+  renderDays();
+  renderRefs();
+  renderChecklist();
+})();
+</script>
