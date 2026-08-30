@@ -329,17 +329,13 @@
   .ak-empty-note{ font-size: 12px; color: var(--ink-soft); font-style: italic; }
 
   /* ---------- quick access ---------- */
-  .ak-today, .ak-quick-grid{ padding: 4px 14px 4px; }
-  .ak-today-card, .ak-quick-card{
+  .ak-quick-grid{ padding: 4px 14px 4px; }
+  .ak-quick-card{
     background: var(--paper-raised);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 14px;
   }
-  .ak-today-title{ font-size: 14px; font-weight: 800; margin: 0 0 8px; }
-  .ak-today-meta{ font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 8px; }
-  .ak-today-list{ margin: 0; padding-left: 18px; }
-  .ak-today-list li{ font-size: 12.5px; margin: 4px 0; }
   .ak-quick-grid{ display: grid; grid-template-columns: 1fr; gap: 10px; }
   .ak-quick-card summary{ cursor: pointer; font-weight: 800; font-size: 13px; color: var(--ink); }
   .ak-quick-card p, .ak-quick-card li{ font-size: 12.5px; color: var(--ink-soft); }
@@ -485,8 +481,6 @@
   .ak-overview th{ color: var(--ink-soft); font-weight: 700; font-family: var(--font-mono); font-size: 10.5px; }
   .ak-overview td:last-child{ white-space: normal; min-width: 180px; }
 
-  .ak-today-hl{ display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
-
   @media print{
     .ak-nav-wrap{ position: static; }
     .ak-card-body{ max-height: none !important; }
@@ -552,7 +546,6 @@
   </div>
 
   <div class="ak-section-label">每日行程</div>
-  <div class="ak-today" id="akToday"></div>
   <div class="ak-days" id="akDays"></div>
 
   <div class="ak-section-label">住宿／登船快速查閱</div>
@@ -635,8 +628,8 @@
         ["16:00","Pioneer Square 散步","最晚 16:30 叫車，替 Monorail＋晚餐留緩衝",K],
         ["16:30","Uber 前往 Seattle Center","不取車、不進停車場，直接開始晚間行程",""],
         ["16:55","Monorail 來回體驗","Westlake ↔ Seattle Center；必搭，留意 Seattle Center 站施工動線",O],
-        ["17:20","晚餐：Skillet: Counter","無訂位、櫃檯現點；到店即點。這頓是彈性閥——Monorail 若稍晚就外帶，塔基或下塔後再吃",""],
-        ["17:45","前往太空針塔入口","Caffè Vita 改為有時間才外帶；繞塔基外側至主入口坡道",""],
+        ["17:20","晚餐：Skillet: Counter","無訂位、櫃檯現點、到店直接點。這頓可壓縮：若 Monorail 延誤，就改外帶，等進太空針塔前或下塔後再吃，不要讓它卡到 18:00 入場",""],
+        ["17:45","前往太空針塔入口","有時間才外帶一杯 Caffè Vita（西雅圖在地精品咖啡烘豆老店，1995 年創立）；沿太空針塔底座外圍走到主入口坡道",""],
         ["17:55","安檢與入場","太空針塔已訂；依票券指定 18:00 抵達（timed entry，寬限一般 15–30 分鐘，別遲到）",O],
         ["18:00","太空針塔上塔","已訂；傍晚、日落與夜景，入場後可留至當日關門",O],
         ["20:30","Uber 回住宿","租車全天停在住宿車道，免市區取車",""]
@@ -644,7 +637,8 @@
       sights: [
         "Boeing Everett 廠房是全球體積最大的單棟建築",
         "Pike Place 魚販會拋接整條鮭魚；1971 年第一家星巴克就藏在市場角落",
-        "King Street Station 鐘塔仿威尼斯聖馬可廣場鐘樓，1906 年曾是西雅圖最高建築"
+        "King Street Station 鐘塔仿威尼斯聖馬可廣場鐘樓，1906 年曾是西雅圖最高建築",
+        "太空針塔為 1962 年世界博覽會而建，高 184 公尺；觀景台的旋轉玻璃地板 The Loupe 是全球首座會旋轉的玻璃觀景層"
       ],
       safety: [
         "前往 Pike Place 避開 3rd Ave 的 Pine–Pike 路段，白天快速通過",
@@ -660,7 +654,7 @@
       schedule: [
         ["07:00","起床、退房、行李分流","護照/藥品/行動電源等隨身，不托運",""],
         ["07:15","住處簡單早餐","咖啡＋9/17 Trader Joe's 買的貝果與抹醬；正式一餐是 13:00 船上 Garden Café",""],
-        ["07:40","前往 SIXT 還車","200 Pike St；先加滿油，預留市區車流與找入口時間",""],
+        ["07:40","前往 SIXT 還車","200 Pike St；市中心核心幾乎沒有加油站，最近是 Capitol Hill 的 76（Broadway & E Pike），往東上坡約 1 英里、回程順路。從住處出發時就先加滿更省事。預留市區車流與找入口時間",""],
         ["09:00","SIXT 還車","拍車身、油量、里程與收據後，確認隨身物品全數帶走；當日硬時間",K],
         ["09:00","計程車前往 Pier 66","2225 Alaskan Way；還車後不再保留車輛，避免時間壓力",""],
         ["09:30–10:00","抵達 Pier 66、寄放託運行李","eDocs 指定抵達時段；僅交已貼 NCL 行李條的行李，護照與值錢物品絕不交出去",K],
@@ -1002,31 +996,6 @@
     wrap.innerHTML = '<table><thead><tr><th>日期</th><th>地點</th><th>重點</th></tr></thead><tbody>'+rows+'</tbody></table>';
   }
 
-  // Small banner above the day list. Purpose by phase:
-  //  before → countdown + says the first day is already expanded below
-  //  during → pins TODAY and its can't-miss (warn) times above the fold
-  //  after  → hidden (nothing useful to show)
-  function renderToday(){
-    var wrap = document.getElementById("akToday");
-    var p = pickDay(), today = p.day;
-    if(p.phase === "after"){ wrap.style.display = "none"; return; }
-    var card = el("section", "ak-today-card");
-    if(p.phase === "before"){
-      card.innerHTML = '<p class="ak-today-title">距出發還有 ' + p.daysLeft + ' 天</p>' +
-        '<div class="ak-today-meta">下方已自動展開第一天：' + today.date + '（' + today.dow + '）' + today.title + '</div>';
-      wrap.appendChild(card);
-      return;
-    }
-    card.innerHTML = '<p class="ak-today-title">今天 ' + today.date + '（' + today.dow + '）</p>' +
-      '<div class="ak-today-meta">' + today.title + '｜' + today.loc + '</div>';
-    var warns = today.schedule.filter(function(r){ return r[3] === "warn" && r[1]; });
-    if(warns.length){
-      var list = el("ul", "ak-today-list");
-      warns.forEach(function(r){ list.appendChild(el("li", null, '<strong>' + r[0] + '</strong>　' + r[1])); });
-      card.appendChild(list);
-    }
-    wrap.appendChild(card);
-  }
 
   function setActiveNav(id){
     DAYS.forEach(function(d){
@@ -1169,7 +1138,6 @@
   }
 
   renderOverview();
-  renderToday();
   renderNav();
   renderDays();
   renderRefs();
