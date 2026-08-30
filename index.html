@@ -1,5 +1,9 @@
-<title>NCL Bliss 阿拉斯加郵輪｜隨身查閱卡</title>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>阿拉斯加郵輪 2026｜隨身行程卡</title>
 <style>
   :root{
     color-scheme: light;
@@ -489,6 +493,8 @@
     details{ break-inside: avoid; }
   }
 </style>
+</head>
+<body>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
@@ -536,7 +542,7 @@
     </div>
   </section>
 
-  <details class="ak-overview">
+  <details class="ak-overview" open>
     <summary>全程一覽（12 天）</summary>
     <div class="ak-overview-scroll" id="akOverview"></div>
   </details>
@@ -586,9 +592,9 @@
       hl: ["DL068 06:00 抵達", "SIXT 09:00 取車", "Gas Works 日落"],
       schedule: [
         ["TPE 06:00","Trip.com 接送：住家 → TPE T2","已訂購；含 TPE T2 東方宇逸貴賓室",""],
-        ["09:50","DL068 由 TPE 起飛","經濟艙・A350・含餐",""],
+        ["約 09:50","DL068 由 TPE 起飛","經濟艙・A350・含餐；訂位單 09:50、近期排班約 09:30，均為當日清晨抵 SEA，以 Delta App 為準",""],
         ["SEA 06:00","抵達 Seattle（同日）","入境、領行李",""],
-        ["09:00","SIXT 取車","SEA Rental Car Center，詳見下方租車卡",K],
+        ["09:00","SIXT 取車","SEA Rental Car Center；證件與車型見〔常用資訊〕，還車地址見上方應急卡",K],
         ["10:00","抵達住宿寄放行李","先告知房東預計時間",""],
         ["10:15","Suzzallo Reading Room","🅿️ Central Plaza Garage：US$5／小時，C02–C04，PayByPhone 地點代碼 123211 或自助機；圖書館開放時間見出發前待辦",P],
         ["11:00","UW 校內 Einstein Bros 貝果（有開才吃）","9/30 才開學，校內店＋學餐停課期多半縮短或不開；出發前查 interim 時段，沒開就吃車上 TJ's 貝果",P],
@@ -607,30 +613,31 @@
         "Einstein Bros（貝果）、Chipotle（現捲 burrito）、Trader Joe's（自有品牌起司）都是台灣沒有的美國本土日常連鎖"
       ],
       options: ["UW 學餐 Local Point 與校內 Einstein Bros 開學前（9/30）多半關閉：午餐直接改 University Village，貝果靠車上 TJ's"],
-      safety: ["開車全程不進市中心", "每次離車前清空可見物品，行李只放後車廂"]
+      safety: ["紅眼航班落地即開一整天：兩人輪流開，太累就砍 Northgate 段先回住處休息（購物本來就彈性）", "開車全程不進市中心", "每次離車前清空可見物品，行李只放後車廂"]
     },
     {
       id: "d0918", date: "9/18", dow: "五", month: 9, day: 18,
       title: "Boeing、Pike Place、太空針塔", loc: "Seattle 市區徒步日",
       badges: [[O,"Boeing / SIXT / 太空針塔 已訂"]],
-      hl: ["Boeing 10:00", "住宿停車＋Uber", "太空針塔 18:00"],
+      hl: ["Boeing 10:00", "Pike Place 13:15", "太空針塔 18:00"],
       schedule: [
         ["07:45","住處早餐","咖啡＋9/17 Trader Joe's 貝果與抹醬；11:20 Paper Plane Café 才是正式早午餐",""],
         ["08:30","開車前往 Boeing（Everett）","約 40 分鐘；停 Future of Flight 免費停車場，預留報到緩衝",""],
         ["09:30","Boeing Tour 報到","逾 10:00 未到場票券直接作廢",K],
-        ["10:00","Boeing Factory Tour","訂單號見信箱，約 80 分鐘",""],
+        ["10:00","Boeing Factory Tour","訂單號見信箱，約 80 分鐘。廠房導覽**禁帶包與手機／相機**（現場寄物）、須穿包鞋，含約 0.8 km 步行與樓梯——大包留車上、只帶證件與車鑰匙",T],
         ["11:20","早午餐：Paper Plane Café","Future of Flight 館內；Ivar's 蛤蜊濃湯",""],
-        ["12:00","開回住宿停車","優先停屋主允許的車道；不留可見物品，下午不再開進市中心",K],
+        ["12:00","開回住宿停車","優先停屋主允許的車道；不留可見物品，下午不再開進市中心",T],
         ["12:50","Uber 前往 Pike Place Market","直接下車進市場，免找車位、付停車費與晚間取車",""],
         ["13:15","Pike Place Chowder","先於官網 online order 再取餐",T],
         ["13:50","市場核心逛完","Piroshky、第一家星巴克／拋魚秀、Beecher's、口香糖牆、Waterfront",""],
         ["15:20","King Street Station 拍火車","1906 年車站大廳",""],
-        ["16:00","Pioneer Square 散步","最晚 16:30 叫車，替 Monorail＋晚餐留緩衝",K],
+        ["16:00","Pioneer Square 散步","最晚 16:30 叫車，替 Monorail＋晚餐留緩衝",T],
         ["16:30","Uber 前往 Seattle Center","不取車、不進停車場，直接開始晚間行程",""],
-        ["16:55","Monorail 來回體驗","Westlake ↔ Seattle Center；必搭，留意 Seattle Center 站施工動線",O],
-        ["17:20","晚餐：Skillet: Counter","無訂位、櫃檯現點、到店直接點。這頓可壓縮：若 Monorail 延誤，就改外帶，等進太空針塔前或下塔後再吃，不要讓它卡到 18:00 入場",""],
-        ["17:45","前往太空針塔入口","有時間才外帶一杯 Caffè Vita（西雅圖在地精品咖啡烘豆老店，1995 年創立）；沿太空針塔底座外圍走到主入口坡道",""],
-        ["17:55","安檢與入場","太空針塔已訂；依票券指定 18:00 抵達（timed entry，寬限一般 15–30 分鐘，別遲到）",O],
+        ["16:55","Monorail 來回體驗","先生想搭，但**時間吃緊時整段捨棄**——班距約 10 分、來回加走路常要 30–35 分",T],
+        ["17:20","晚餐：Skillet: Counter","**預設外帶**（無訂位、櫃檯現點）；進塔前或下塔後再吃，不佔用 17:00–18:00",""],
+        ["17:30","硬點：此刻應正在走向太空針塔","前面任一段延誤就從這裡回推——Monorail 先砍、Skillet 拿了就走",K],
+        ["17:45","抵達太空針塔入口","沿塔底座外圍走到主入口坡道；有餘裕才外帶一杯 Caffè Vita（西雅圖在地精品咖啡烘豆老店，1995 年）",""],
+        ["17:55","安檢與入場","太空針塔已訂；**盡量 17:55–18:05 到**（票面時間前後約 5 分），遲到要現場排到下一梯",K],
         ["18:00","太空針塔上塔","已訂；傍晚、日落與夜景，入場後可留至當日關門",O],
         ["20:30","Uber 回住宿","租車全天停在住宿車道，免市區取車",""]
       ],
@@ -650,13 +657,13 @@
       id: "d0919", date: "9/19", dow: "六", month: 9, day: 19,
       title: "還車、寄行李、登船", loc: "Seattle → 登船",
       badges: [[O,"郵輪 / Le Bistro / SIXT 還車 已訂"],[O,"Pier 66 寄放行李 已確認"]],
-      hl: ["09:00 還車", "09:30–10:00 抵達碼頭", "16:00 離港"],
+      hl: ["09:30–10:00 抵達碼頭", "14:00 All Aboard", "16:00 離港"],
       schedule: [
         ["07:00","起床、退房、行李分流","護照/藥品/行動電源等隨身，不托運",""],
         ["07:15","住處早餐","咖啡＋9/17 Trader Joe's 買的貝果與抹醬，吃夠——登船排隊可能拖到接近中午；正式一餐是登船後的主餐廳午餐",""],
         ["07:40","前往 SIXT 還車","200 Pike St；市中心核心幾乎沒有加油站，最近是 Capitol Hill 的 76（Broadway & E Pike），往東上坡約 1 英里、回程順路。從住處出發時就先加滿更省事。預留市區車流與找入口時間",""],
         ["09:00","SIXT 還車","拍車身、油量、里程與收據後，確認隨身物品全數帶走；當日硬時間",K],
-        ["09:00","計程車前往 Pier 66","2225 Alaskan Way；還車後不再保留車輛，避免時間壓力",""],
+        ["09:15","計程車前往 Pier 66","2225 Alaskan Way；還車後不再保留車輛，避免時間壓力",""],
         ["09:30–10:00","抵達 Pier 66、寄放託運行李","eDocs 指定抵達時段；僅交已貼 NCL 行李條的行李，護照與值錢物品絕不交出去",K],
         ["10:00","過安檢、辦理報到","領房卡後即進入管制區、不再外出；購物已改到 9/26 Southcenter",""],
         ["10:30","候船大廳等待","坐著休息、確認 NCL App 與集合站資訊",""],
@@ -718,7 +725,7 @@
       id: "d0922", date: "9/22", dow: "二", month: 9, day: 22,
       title: "Skagway · White Pass Railway", loc: "Skagway",
       badges: [[O,"官方行程 SGYN40 已訂"]],
-      hl: ["06:00 靠港", "07:30 出發（約 8h15m）", "20:00 離港"],
+      hl: ["06:00 靠港", "07:30 出發（約 8 小時 15 分）", "20:00 離港"],
       schedule: [
         ["05:45","起床，確認已靠港","雨具、護照、行程票、行動電源隨身",""],
         ["06:00","Skagway 靠港","",K],
@@ -748,7 +755,7 @@
       hl: ["全天觀景", "19:15 Le Bistro"],
       schedule: [
         ["清晨","查看進灣與靠冰川時間","以 App／Freestyle Daily 為準（隨潮汐微調）",""],
-        ["8:00 前","到 Observation Lounge（Deck 15 船艏）卡位","巨型觀景廳，趁人潮還沒滿先占窗邊",""],
+        ["08:00 前","到 Observation Lounge（Deck 15 船艏）卡位","巨型觀景廳，趁人潮還沒滿先占窗邊",""],
         ["早餐","就在 Observation Lounge 拿免費輕食","麥片、優格、水果、丹麥麵包、瑪芬＋咖啡站，不用離開觀景位",""],
         ["10:00–13:00","Margerie Glacier 峰值","船頂到冰川前只剩幾百公尺，常做慢速 360° 迴轉；聽冰裂、看崩冰。輪流到戶外甲板",O],
         ["午餐","Observation Lounge 午間輕食","沙拉吧、手指三明治、冷肉起司、甜點；一樣不用離開觀景位",""],
@@ -759,13 +766,13 @@
         "1750 年整個灣區被厚達 1,500 公尺的冰川覆蓋，250 年退縮 100 公里",
         "船可能靠近 Margerie Glacier 到只剩幾百公尺，能聽見冰裂聲"
       ],
-      safety: ["本次是內艙、沒有窗戶：Glacier Bay 當天別等房內廣播，8:00 前就到 Observation Lounge 占窗邊；該廳早、午都有免費輕食＋咖啡站，整天不用離開觀景位", "手機、相機電池低溫耗電快，行動電源放貼身口袋"]
+      safety: ["內艙房沒有窗戶：Glacier Bay 當天別等房內廣播，08:00 前就到 Observation Lounge 占窗邊；該廳早、午都有免費輕食＋咖啡站，整天不用離開觀景位", "手機、相機電池低溫耗電快，行動電源放貼身口袋"]
     },
     {
       id: "d0924", date: "9/24", dow: "四", month: 9, day: 24,
       title: "Ketchikan · Ward Cove", loc: "Ward Cove",
       badges: [[O,"官方行程 KTNN04 已訂"]],
-      hl: ["07:00 靠港", "07:30 出發（3h15m）", "13:15 離港"],
+      hl: ["07:00 靠港", "07:30 出發（約 3 小時 15 分）", "13:15 離港"],
       schedule: [
         ["06:00","起床","雨具、防水鞋、望遠鏡、防蚊隨身",""],
         ["06:30","Garden Café 快速早餐","",""],
@@ -815,14 +822,14 @@
         ["15:00","Sleep Inn 辦理入住","",""],
         ["16:45","前往 T-Mobile Park","場內晚餐：Rolling Smoke BBQ（brisket／rib）＋ Garlic Fries；想坐下吃可賽前到 Jack's BBQ（SoDo，離球場步行約 10 分）",""],
         ["18:40","Mariners 對 Angels","Section 332・Row 16・Seat 1–2",O],
-        ["賽後","1 Line 到 Angle Lake","出站直接叫車回 Sleep Inn，勿步行",K]
+        ["賽後","1 Line 到 Angle Lake","出站直接叫車回 Sleep Inn，勿步行",T]
       ],
       sights: [
         "館內的空軍一號（VC-137C）真的載過甘迺迪、詹森、尼克森等總統",
         "T-Mobile Park 可收合屋頂因西雅圖秋雨而生（1999 年）"
       ],
-      options: ["若 10:00 還沒下船：砍 Southcenter 百貨、只留 BWW 午餐；15:00 入住到 18:40 球賽本來就有彈性", "Museum of Flight 門票先線上買（週六現場排隊）"],
-      safety: ["Bag Policy：透明袋限 12\"×6\"×12\"，出發前再查 MLB App"]
+      options: ["若 10:00 還沒下船：砍 Southcenter 百貨、只留 BWW 午餐；15:00 入住到 18:40 球賽本來就有彈性（持台灣護照走非美籍通道通常較慢，10:00 前下不了船就直接執行）", "Museum of Flight 門票先線上買（週六現場排隊）"],
+      safety: ["Bag Policy：透明袋限 12\"×6\"×12\"，出發前再查 MLB App", "臨行前用 MLB App 再確認 first pitch（列 18:40／6:40 PM PT，可能因轉播微調）"]
     },
     {
       id: "d0927", date: "9/27", dow: "日", month: 9, day: 27,
@@ -833,7 +840,7 @@
         ["12:00","Sleep Inn 退房","",""],
         ["12:30","前往 SEA、辦理國際線報到","飯店免費接駁無公開班表——9/26 入住時就問到 9/27 發車時間並預約；備案叫 Uber（車程僅 5–10 分）",K],
         ["13:15","THE Club SEA 貴賓室","",""],
-        ["16:00","DL069 由 SEA 起飛","經濟艙・A350・含餐；臨行前用 Delta App 再確認時刻",""]
+        ["約 16:25","DL069 由 SEA 起飛","經濟艙・A350・含餐；訂位單寫 16:00、近期排班約 16:25，以 Delta App 為準",""]
       ],
       sights: [],
       safety: []
@@ -907,19 +914,20 @@
       "電子：手機、手機掛繩、eSIM 已安裝確認（落地前才啟用，啟用碼另印紙本備援）、延長線／插頭（無突波保護）、充電線、行動電源",
       "健康：醫療包（處方藥原包裝、暈船藥、腸胃藥、備用眼鏡）",
       "衣著：防水外套、防水鞋、免洗襪子及內褲、太陽眼鏡、泳衣泳帽、望遠鏡、防水袋／夾鏈袋",
+      "頭燈／手電筒（9/21 Mendenhall 尾段接近入夜）",
       "服裝：Le Bistro／Cagney's 正式一點服裝",
       "球賽：9/26 用透明袋（12\"×6\"×12\" 以內，符合 T-Mobile Park Bag Policy）"
     ]},
-    { tier:"約 60 天前", desc:"（Space Needle 門票、NCL online check-in、Delta 時刻已完成）", items:[
+    { tier:"行前待辦", desc:"出發前 20 天，一次做完（Space Needle 門票、NCL check-in 已完成）", items:[
       "線上購 Museum of Flight 門票（$29/成人；一般入場、非指定時段，只是省現場排隊）",
       "護照效期、信用卡海外交易、處方藥原包裝確認",
       "確認住宿扣款完成",
-      "安排支付 NCL 每日服務費（USD 280）"
-    ]},
-    { tier:"約 21 天前", desc:"", items:[
+      "安排支付 NCL 每日服務費（USD 280）",
       "下載 NCL App、印一份 eDocs／行李條紙本；記住指定登船時段與 9/19 SIXT 還車 → 計程車至 Pier 66 → 回碼頭動線",
+      "用 SIXT 確認信核對還車地址與入口（訂單寫 200 Pike St，入口在 Pike St）",
+      "確認 Boeing 訂單含 Everett 廠房組裝線導覽，不只 gallery admission",
       "確認 9/17 UW 學餐／Einstein Bros interim 時段（打 UW HFS 或看官網）；沒開就靠 University Village 內餐廳＋車上 TJ's 貝果",
-      "行前掃一眼 seattlemonorail.com 有無 9/18 單日停駛（機率低；平日 07:30–23:00、約每 10 分一班）",
+      "掃一眼 seattlemonorail.com 有無 9/18 單日停駛（機率低）；查 UW Suzzallo Library 9/17 開放時間",
       "下載離線地圖，補齊 eDocs／住宿／岸上行程憑證的離線副本與紙本"
     ]},
     { tier:"船上", desc:"上船後第一天", items:[
@@ -1152,5 +1160,15 @@
   var _pd = pickDay().day;
   var _pc = document.getElementById(_pd.id);
   if(_pc){ openCard(_pc, true); setActiveNav(_pd.id); }
+
+  // print: force every <details> open so nothing is blank on paper
+  window.addEventListener("beforeprint", function(){
+    document.querySelectorAll("details").forEach(function(d){ d.dataset.printPrev = d.open ? "1" : "0"; d.open = true; });
+  });
+  window.addEventListener("afterprint", function(){
+    document.querySelectorAll("details").forEach(function(d){ if(d.dataset.printPrev === "0") d.open = false; });
+  });
 })();
 </script>
+</body>
+</html>
