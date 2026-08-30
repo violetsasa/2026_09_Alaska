@@ -431,6 +431,69 @@
   }
 
   .icon{ width: 16px; height: 16px; display: inline-block; vertical-align: -3px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- SOS card (always open) ---------- */
+  .ak-sos{
+    margin: 12px 14px 4px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    padding: 10px 12px;
+  }
+  .ak-sos-title{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 8px;
+  }
+  .ak-sos-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 14px;
+  }
+  .ak-sos-grid > div{ min-width: 0; }
+  .ak-sos-grid span{ display: block; font-size: 10px; color: var(--ink-soft); }
+  .ak-sos-grid strong{ font-size: 12.5px; font-variant-numeric: tabular-nums; word-break: break-word; }
+  .ak-sos-grid a{ color: var(--ink); text-decoration: none; }
+
+  /* ---------- overview table ---------- */
+  .ak-overview{
+    margin: 4px 14px 4px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--paper-raised);
+    overflow: hidden;
+  }
+  .ak-overview > summary{
+    cursor: pointer;
+    padding: 11px 14px;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .ak-overview-scroll{ overflow-x: auto; }
+  .ak-overview table{ border-collapse: collapse; width: 100%; font-size: 11.5px; }
+  .ak-overview th, .ak-overview td{
+    border-top: 1px solid var(--line);
+    padding: 6px 10px;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: top;
+  }
+  .ak-overview th{ color: var(--ink-soft); font-weight: 700; font-family: var(--font-mono); font-size: 10.5px; }
+  .ak-overview td:last-child{ white-space: normal; min-width: 180px; }
+
+  .ak-today-hl{ display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+
+  @media print{
+    .ak-nav-wrap{ position: static; }
+    .ak-card-body{ max-height: none !important; }
+    .ak-card-chevron, .ak-nav-wrap{ display: none; }
+    .ak-overview[open] .ak-overview-scroll, .ak-overview .ak-overview-scroll{ display: block; }
+    details{ break-inside: avoid; }
+  }
 </style>
 
 <svg width="0" height="0" style="position:absolute">
@@ -465,6 +528,25 @@
     <div class="ak-legend" aria-label="資訊標籤說明"><span class="ok"><i></i>已確認</span><span class="pending"><i></i>待確認</span><span class="tip"><i></i>提醒／建議</span><span class="warn"><i></i>重要</span></div>
   </header>
 
+  <section class="ak-sos" aria-label="應急資訊">
+    <p class="ak-sos-title">應急資訊</p>
+    <div class="ak-sos-grid">
+      <div><span>艙房 / NCL 確認單</span><strong>見 eDocs</strong></div>
+      <div><span>Pier 66（登船）</span><strong>2225 Alaskan Way</strong></div>
+      <div><span>SIXT 還車</span><strong>200 Pike St</strong></div>
+      <div><span>住宿 9/17–19</span><strong>Fremont / Wallingford</strong></div>
+      <div><span>住宿 9/26–27</span><strong>Sleep Inn · 20406 International Blvd</strong></div>
+      <div><span>緊急（美／加）</span><strong><a href="tel:911">911</a></strong></div>
+      <div><span>World Nomads 保險</span><strong><a href="tel:+353212378009">+353 21 237 8009</a></strong></div>
+      <div><span>International SOS</span><strong><a href="tel:+886266199205">+886 2 6619 9205</a></strong></div>
+    </div>
+  </section>
+
+  <details class="ak-overview">
+    <summary>全程一覽（12 天）</summary>
+    <div class="ak-overview-scroll" id="akOverview"></div>
+  </details>
+
   <div class="ak-nav-wrap">
     <nav class="ak-nav" id="akNav" aria-label="日期導覽"></nav>
   </div>
@@ -477,12 +559,12 @@
   <div class="ak-quick-grid">
     <details class="ak-quick-card">
       <summary>Fremont 住宿｜入住與 Wi‑Fi</summary>
-      <p>9/17 15:00 後入住；門鎖開法與 Wi‑Fi 密碼見訂房訊息（不對外公開）。門鎖密碼僅在入住日 15:00 至退房日 11:00 有效。</p>
+      <p>9/17 15:00 後入住；門鎖開法與 Wi‑Fi 密碼見訂房平台 App 內的房東訊息（不對外公開）。門鎖密碼僅在入住日 15:00 至退房日 11:00 有效。</p>
       <ul><li>室內禁菸、進屋脫鞋、22:00 後降低音量。</li><li>離開前：浴室地板集中毛巾、確認鎖門；不必洗床單或倒垃圾。</li></ul>
     </details>
     <details class="ak-quick-card">
       <summary>9/19 登船｜先還車再寄行李</summary>
-      <ul><li>09:00 SIXT（200 Pike St）還車為硬時間。</li><li>還車後搭計程車到 Pier 66（2225 Alaskan Way）寄放已貼 NCL 行李條的託運行李。</li><li>eDocs 指定抵達碼頭時段 <strong>9:30–10:00</strong>；12:00 開放登船；<strong>14:00（開航前 2 小時）前務必上船</strong>。</li><li>護照、eDocs、藥品、行動電源與值錢物品全程隨身。</li></ul>
+      <ul><li>09:00 SIXT（200 Pike St）還車為硬時間。</li><li>還車後搭計程車到 Pier 66（2225 Alaskan Way）寄放已貼 NCL 行李條的託運行李。</li><li>eDocs 指定抵達碼頭時段 <strong>09:30–10:00</strong>；<strong>報到領房卡後就進管制區、不再外出</strong>（購物已改到 9/26）。</li><li>12:00 開放登船，<strong>14:00（開航前 2 小時）前務必上船</strong>。</li><li>護照、eDocs、藥品、行動電源與值錢物品全程隨身。</li></ul>
     </details>
     <details class="ak-quick-card">
       <summary>憑證與離線備份</summary>
@@ -515,7 +597,7 @@
         ["SEA 06:00","抵達 Seattle（同日）","入境、領行李",""],
         ["09:00","SIXT 取車","SEA Rental Car Center，詳見下方租車卡",K],
         ["10:00","抵達住宿寄放行李","先告知房東預計時間",""],
-        ["10:15","Suzzallo Reading Room","🅿️ Central Plaza Garage：US$5／小時，C02–C04，PayByPhone（123211）或自助機",P],
+        ["10:15","Suzzallo Reading Room","🅿️ Central Plaza Garage：US$5／小時，C02–C04，PayByPhone 地點代碼 123211 或自助機；圖書館開放時間見出發前待辦",P],
         ["11:00","UW 校內 Einstein Bros 貝果（有開才吃）","9/30 才開學，校內店＋學餐停課期多半縮短或不開；出發前查 interim 時段，沒開就吃車上 TJ's 貝果",P],
         ["12:15","午餐：University Village 內餐廳","UW 學餐 Local Point 開學前通常關閉，改在此吃（確定營業、選擇多）；順逛購物村抓 1–1.5 小時",P],
         ["14:25","Target ＋ Best Buy（Northgate）","免費客用停車，約 80 分鐘；以入口標示為準",""],
@@ -531,7 +613,8 @@
         "TJ Maxx／Target／Best Buy 都是美國家喻戶曉的連鎖，逛法像挖寶",
         "Einstein Bros（貝果）、Chipotle（現捲 burrito）、Trader Joe's（自有品牌起司）都是台灣沒有的美國本土日常連鎖"
       ],
-      safety: ["DL068 已與訂位單一致（09:50 起飛／06:00 抵達）；臨行前用 Delta App 再確認，若變成下午抵達版本整天要重排", "開車全程不進市中心", "每次離車前清空可見物品，行李只放後車廂", "UW 學餐 Local Point 與校內 Einstein Bros 開學前（9/30）多半關閉：午餐改 University Village，貝果靠車上 TJ's"]
+      options: ["UW 學餐 Local Point 與校內 Einstein Bros 開學前（9/30）多半關閉：午餐直接改 University Village，貝果靠車上 TJ's"],
+      safety: ["開車全程不進市中心", "每次離車前清空可見物品，行李只放後車廂"]
     },
     {
       id: "d0918", date: "9/18", dow: "五", month: 9, day: 18,
@@ -540,7 +623,7 @@
       hl: ["Boeing 10:00", "住宿停車＋Uber", "太空針塔 18:00"],
       schedule: [
         ["07:45","住處早餐","咖啡＋9/17 Trader Joe's 貝果與抹醬；11:20 Paper Plane Café 才是正式早午餐",""],
-        ["08:30","開車前往 Boeing（Everett）","約 40 分鐘；停 Future of Flight 免費停車場，預留報到緩衝",K],
+        ["08:30","開車前往 Boeing（Everett）","約 40 分鐘；停 Future of Flight 免費停車場，預留報到緩衝",""],
         ["09:30","Boeing Tour 報到","逾 10:00 未到場票券直接作廢",K],
         ["10:00","Boeing Factory Tour","訂單號見信箱，約 80 分鐘",""],
         ["11:20","早午餐：Paper Plane Café","Future of Flight 館內；Ivar's 蛤蜊濃湯",""],
@@ -553,7 +636,7 @@
         ["16:30","Uber 前往 Seattle Center","不取車、不進停車場，直接開始晚間行程",""],
         ["16:55","Monorail 來回體驗","Westlake ↔ Seattle Center；必搭，留意 Seattle Center 站施工動線",O],
         ["17:20","晚餐：Skillet: Counter","無訂位、櫃檯現點；到店即點。這頓是彈性閥——Monorail 若稍晚就外帶，塔基或下塔後再吃",""],
-        ["17:45","前往太空針塔入口","Caffè Vita 改為有時間才外帶；繞塔基外側至主入口坡道",K],
+        ["17:45","前往太空針塔入口","Caffè Vita 改為有時間才外帶；繞塔基外側至主入口坡道",""],
         ["17:55","安檢與入場","太空針塔已訂；依票券指定 18:00 抵達（timed entry，寬限一般 15–30 分鐘，別遲到）",O],
         ["18:00","太空針塔上塔","已訂；傍晚、日落與夜景，入場後可留至當日關門",O],
         ["20:30","Uber 回住宿","租車全天停在住宿車道，免市區取車",""]
@@ -573,25 +656,25 @@
       id: "d0919", date: "9/19", dow: "六", month: 9, day: 19,
       title: "還車、寄行李、登船", loc: "Seattle → 登船",
       badges: [[O,"郵輪 / Le Bistro / SIXT 還車 已訂"],[O,"Pier 66 寄放行李 已確認"]],
-      hl: ["09:00 還車", "9:30–10:00 抵達碼頭", "16:00 離港"],
+      hl: ["09:00 還車", "09:30–10:00 抵達碼頭", "16:00 離港"],
       schedule: [
-        ["07:00","起床、退房、行李分流","護照/藥品/行動電源等隨身，不托運",K],
+        ["07:00","起床、退房、行李分流","護照/藥品/行動電源等隨身，不托運",""],
         ["07:15","住處簡單早餐","咖啡＋9/17 Trader Joe's 買的貝果與抹醬；正式一餐是 13:00 船上 Garden Café",""],
-        ["07:40","前往 SIXT 還車","200 Pike St；先加滿油，預留市區車流與找入口時間",K],
-        ["09:00","SIXT 還車","拍車身、油量、里程與收據後，確認隨身物品全數帶走",K],
+        ["07:40","前往 SIXT 還車","200 Pike St；先加滿油，預留市區車流與找入口時間",""],
+        ["09:00","SIXT 還車","拍車身、油量、里程與收據後，確認隨身物品全數帶走；當日硬時間",K],
         ["09:00","計程車前往 Pier 66","2225 Alaskan Way；還車後不再保留車輛，避免時間壓力",""],
-        ["9:30–10:00","抵達 Pier 66、寄放託運行李","eDocs 指定抵達時段；僅交已貼 NCL 行李條的行李，護照與值錢物品絕不交出去",K],
+        ["09:30–10:00","抵達 Pier 66、寄放託運行李","eDocs 指定抵達時段；僅交已貼 NCL 行李條的行李，護照與值錢物品絕不交出去",K],
         ["10:00","過安檢、辦理報到","領房卡後即進入管制區、不再外出；購物已改到 9/26 Southcenter",""],
         ["10:30","候船大廳等待","坐著休息、確認 NCL App 與集合站資訊",""],
         ["12:00","開放登船","出示護照與 eDocs",""],
         ["13:00","Garden Café 自助餐","登船後第一頓正餐",""],
-        ["登船後","完成 eMuster 安全集合","用 NCL App 看安全影片，再到指定 muster station 打卡；開航前必須完成",K],
+        ["登船後","完成 eMuster 安全集合","用 NCL App（eMuster：登船當天的安全集合演練）看影片，再到指定 muster station 由船員掃房卡；開航前必須完成",K],
         ["14:00","All Aboard","開航前 2 小時，務必已在船上",K],
         ["16:00","Norwegian Bliss 離港","",""],
         ["18:45","Le Bistro（Deck 17）","",O]
       ],
       sights: [],
-      safety: ["eDocs 指定抵達碼頭時段為 9:30–10:00，早到會被請回；12:00 開放登船，14:00（開航前 2 小時）前務必上船。以 09:00 還車為硬時間，完成後直接搭計程車前往 Pier 66。"]
+      safety: ["eDocs 指定抵達碼頭時段為 09:30–10:00，早到會被請回；12:00 開放登船，14:00（開航前 2 小時）前務必上船。以 09:00 還車為硬時間，完成後直接搭計程車前往 Pier 66。", "登船安檢：瓶裝水／汽水／啤酒烈酒不能帶（含未開封）；密封葡萄酒每瓶收開瓶費 USD 15；大麻／CBD 一律禁，不論醫療用途"]
     },
     {
       id: "d0920", date: "9/20", dow: "日", month: 9, day: 20,
@@ -616,8 +699,8 @@
       schedule: [
         ["早餐","Garden Café 快速早餐","午餐視 American Diner 營業狀況調整",""],
         ["午餐","American Diner","須確認當日午餐營業",P],
-        ["14:30","靠港，依開放時間下船","靠港不等於可下船，排隊約 30–60 分鐘",K],
-        ["下船後－15:40","碼頭／South Franklin Street 短逛購物","看港景、買紀念品；Tracy's 無需排隊才外帶小點",K],
+        ["14:30","靠港，依開放時間下船","靠港不等於可下船，排隊約 30–60 分鐘",""],
+        ["下船後－15:40","碼頭／South Franklin Street 短逛購物","看港景、買紀念品；Tracy's 只有完全不用排隊時才外帶蟹湯／小點，要排隊就跳過",""],
         ["15:40","前往岸上行程集合點","停止購物，保留步行與集合緩衝",K],
         ["16:30","Mendenhall Glacier Explorer 出發","憑證行程時段 16:30–19:30，交通由 NCL 安排",O],
         ["19:30","跟團返回碼頭","憑證所載結束時間",""],
@@ -629,7 +712,7 @@
         "South Franklin Street：碼頭旁的短逛購物主線；找 Silver Hand 標誌的阿拉斯加原民藝術品"
       ],
       options: [
-        "Tracy's：完全不用排隊才外帶蟹湯／小點",
+        "Tracy's：只有完全不用排隊時才外帶蟹湯／小點；要排隊就直接跳過",
         "The Hangar：真有 45–60 分鐘坐下用餐才考慮",
         "Twisted Fish：岸上行程明顯提早回來才考慮晚餐"
       ],
@@ -641,7 +724,7 @@
       badges: [[O,"官方行程 SGYN40 已訂"]],
       hl: ["06:00 靠港", "07:30 出發（約 8h15m）", "20:00 離港"],
       schedule: [
-        ["05:45","起床，確認已靠港","雨具、護照、行程票、行動電源隨身",K],
+        ["05:45","起床，確認已靠港","雨具、護照、行程票、行動電源隨身",""],
         ["06:30","Garden Café 快速早餐","07:30 岸上行程，用餐後直接前往集合點",""],
         ["07:30","White Pass Railway & Yukon Expedition","巴士去程、火車回程都優先坐右側靠窗",O],
         ["18:30","回船","",""],
@@ -676,7 +759,7 @@
         "1750 年整個灣區被厚達 1,500 公尺的冰川覆蓋，250 年退縮 100 公里",
         "船可能靠近 Margerie Glacier 到只剩幾百公尺，能聽見冰裂聲"
       ],
-      safety: ["手機、相機電池低溫耗電快，行動電源放貼身口袋"]
+      safety: ["本次是內艙、沒有窗戶：Glacier Bay 當天別等房內廣播，早餐後直接去 Observation Lounge 卡位", "手機、相機電池低溫耗電快，行動電源放貼身口袋"]
     },
     {
       id: "d0924", date: "9/24", dow: "四", month: 9, day: 24,
@@ -704,8 +787,8 @@
       schedule: [
         ["早餐","Garden Café","",""],
         ["午餐","American Diner","須確認當日午餐營業",P],
-        ["下午","整理行李、確認標籤與帳單","最後一晚重要物品不托運",K],
-        ["18:00","The Local 提早吃晚餐","不等夜遊後才找完整晚餐",K],
+        ["下午","整理行李、確認標籤與帳單","最後一晚重要物品不托運",""],
+        ["18:00","The Local 提早吃晚餐","不等夜遊後才找完整晚餐",""],
         ["20:30","Victoria Highlights By Night","約 2 小時 30 分",O],
         ["23:59","離港","",""]
       ],
@@ -736,7 +819,8 @@
         "館內的空軍一號（VC-137C）真的載過甘迺迪、詹森、尼克森等總統",
         "T-Mobile Park 可收合屋頂因西雅圖秋雨而生（1999 年）"
       ],
-      safety: ["Bag Policy：透明袋限 12\"×6\"×12\"，出發前再查 MLB App", "Plan B：若 10:00 還沒下船，砍 Southcenter 百貨、只留 BWW 午餐；15:00 入住到 18:40 球賽本來就有彈性", "Museum of Flight 門票先線上買（週六現場排隊）"]
+      options: ["若 10:00 還沒下船：砍 Southcenter 百貨、只留 BWW 午餐；15:00 入住到 18:40 球賽本來就有彈性", "Museum of Flight 門票先線上買（週六現場排隊）"],
+      safety: ["Bag Policy：透明袋限 12\"×6\"×12\"，出發前再查 MLB App"]
     },
     {
       id: "d0927", date: "9/27", dow: "日", month: 9, day: 27,
@@ -780,7 +864,7 @@
     {icon:"i-bed", title:"住宿｜Fremont（9/17–9/19）", rows:[
       ["區域","Fremont / Wallingford 一帶"],
       ["入住/退房","9/17 15:00 後・9/19 12:00 前"],
-      ["門鎖／Wi‑Fi","見訂房訊息（不對外公開）"],
+      ["門鎖／Wi‑Fi","見訂房平台 App 內房東訊息（不對外公開）"],
       ["備註","進屋脫鞋、室內禁菸、22:00 後降低音量"]
     ]},
     {icon:"i-bed", title:"住宿｜Sleep Inn Sea Tac（9/26–9/27）", rows:[
@@ -792,19 +876,19 @@
     {icon:"i-tag", title:"證件｜ESTA", rows:[
       ["狀態","兩人皆已核准"],
       ["效期","至 2028/08/01"],
-      ["備註","申請號／護照號見離線文件"]
+      ["備註","申請號／護照號見離線備份的訂位文件"]
     ]},
     {icon:"i-book", title:"保險｜World Nomads", rows:[
       ["保障期間","9/17－9/28 2026（兩人合併）"],
       ["海外醫療","Unlimited（含 COVID-19，依條款）"],
       ["緊急聯絡","+353 21 237 8009／8003・assist@worldnomads.com"],
-      ["備註","保單號見離線文件"]
+      ["備註","保單號見離線備份的訂位文件"]
     ]},
     {icon:"i-book", title:"保險｜台灣產物", rows:[
       ["保障期間","9/17 05:00－9/29 05:00"],
       ["醫療／後送","US$6,534 醫療・US$26,135－49,004 後送"],
       ["緊急聯絡","International SOS +886-2-6619-9205"],
-      ["備註","保單號見離線文件"]
+      ["備註","保單號見離線備份的訂位文件"]
     ]},
     {icon:"i-tag", title:"eSIM（已購買、已兌換）", rows:[
       ["旅客 A","美國 11 天 3GB/日＋全球 5 天 3GB"],
@@ -815,7 +899,7 @@
 
   var CHECKLIST = [
     { tier:"打包", desc:"出發前物品檢查清單", items:[
-      "證件：護照正本×2（效期要求見七、證件）、健保卡＋兩吋證件照2張、台灣駕照正本×2、國際駕照×2（效期至2029/7底）",
+      "證件：護照正本×2（效期需涵蓋回程後 6 個月，約 2027/3 底前有效）、健保卡＋兩吋證件照2張、台灣駕照正本×2、國際駕照×2（效期至2029/7底）",
       "財務：信用卡（依個人清單全帶）、國際提款卡、小額美金現金 USD 50–100",
       "文件：ESTA 核准畫面、旅遊保險保單、eDocs／行李條／岸上行程憑證／住宿與租車訂單",
       "電子：手機、手機掛繩、eSIM 已安裝確認（落地前才啟用，啟用碼另印紙本備援）、延長線／插頭（無突波保護）、充電線、行動電源",
@@ -898,26 +982,42 @@
     });
   }
 
-  function renderToday(){
-    var wrap = document.getElementById("akToday");
+  function pickDay(){
     var now = new Date();
     var tripStart = new Date(2026, 8, 17);
     var tripEnd = new Date(2026, 8, 29);
     var inTrip = now >= tripStart && now < tripEnd;
-    var today = inTrip ? DAYS.find(function(d){ return now.getFullYear() === 2026 && now.getMonth() === 8 && now.getDate() === d.day; }) : null;
-    if(!today) today = now < tripStart ? DAYS[0] : DAYS[DAYS.length - 1];
-    var card = el("section", "ak-today-card");
+    var day = inTrip ? DAYS.find(function(d){ return now.getFullYear() === 2026 && now.getMonth() === 8 && now.getDate() === d.day; }) : null;
+    if(!day) day = now < tripStart ? DAYS[0] : DAYS[DAYS.length - 1];
     var label = "今天必做";
-    if(now < tripStart){
-      var daysLeft = Math.ceil((tripStart - now) / 86400000);
-      label = '距出發還有 ' + daysLeft + ' 天';
-    }else if(now >= tripEnd){ label = '行程已結束'; }
-    card.innerHTML = '<p class="ak-today-title">'+label+'</p><div class="ak-today-meta">'+today.date+'（'+today.dow+'）｜'+today.title+'</div>';
-    var list = el("ul", "ak-today-list");
-    today.schedule.slice(0, 4).forEach(function(row){
-      if(row[1]) list.appendChild(el("li", null, '<strong>'+row[0]+'</strong>　'+row[1]));
-    });
-    card.appendChild(list);
+    if(now < tripStart){ label = '距出發還有 ' + Math.ceil((tripStart - now) / 86400000) + ' 天'; }
+    else if(now >= tripEnd){ label = '行程已結束'; }
+    return { day: day, label: label };
+  }
+
+  function renderOverview(){
+    var wrap = document.getElementById("akOverview");
+    if(!wrap) return;
+    var rows = DAYS.map(function(d){
+      return '<tr><td><strong>'+d.date+'</strong> '+d.dow+'</td><td>'+d.loc+'</td><td>'+d.hl.join('・')+'</td></tr>';
+    }).join('');
+    wrap.innerHTML = '<table><thead><tr><th>日期</th><th>地點</th><th>重點</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  }
+
+  function renderToday(){
+    var wrap = document.getElementById("akToday");
+    var picked = pickDay(), today = picked.day;
+    var card = el("section", "ak-today-card");
+    card.innerHTML = '<p class="ak-today-title">'+picked.label+'</p><div class="ak-today-meta">'+today.date+'（'+today.dow+'）｜'+today.title+'</div>';
+    var hlWrap = el("div", "ak-today-hl");
+    today.hl.forEach(function(h){ hlWrap.appendChild(el("span", "ak-hl", h)); });
+    card.appendChild(hlWrap);
+    var warns = today.schedule.filter(function(r){ return r[3] === "warn" && r[1]; });
+    if(warns.length){
+      var list = el("ul", "ak-today-list");
+      warns.forEach(function(r){ list.appendChild(el("li", null, '<strong>'+r[0]+'</strong>　'+r[1])); });
+      card.appendChild(list);
+    }
     wrap.appendChild(card);
   }
 
@@ -1061,10 +1161,16 @@
     });
   }
 
+  renderOverview();
   renderToday();
   renderNav();
   renderDays();
   renderRefs();
   renderChecklist();
+
+  // open the current (or nearest) day so its detail is visible without a tap
+  var _pd = pickDay().day;
+  var _pc = document.getElementById(_pd.id);
+  if(_pc){ openCard(_pc, true); setActiveNav(_pd.id); }
 })();
 </script>
