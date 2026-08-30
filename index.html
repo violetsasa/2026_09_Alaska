@@ -986,13 +986,11 @@
     var now = new Date();
     var tripStart = new Date(2026, 8, 17);
     var tripEnd = new Date(2026, 8, 29);
-    var inTrip = now >= tripStart && now < tripEnd;
-    var day = inTrip ? DAYS.find(function(d){ return now.getFullYear() === 2026 && now.getMonth() === 8 && now.getDate() === d.day; }) : null;
-    if(!day) day = now < tripStart ? DAYS[0] : DAYS[DAYS.length - 1];
-    var label = "今天必做";
-    if(now < tripStart){ label = '距出發還有 ' + Math.ceil((tripStart - now) / 86400000) + ' 天'; }
-    else if(now >= tripEnd){ label = '行程已結束'; }
-    return { day: day, label: label };
+    var phase = now < tripStart ? "before" : (now >= tripEnd ? "after" : "during");
+    var day = phase === "during" ? DAYS.find(function(d){ return now.getFullYear() === 2026 && now.getMonth() === 8 && now.getDate() === d.day; }) : null;
+    if(!day) day = phase === "before" ? DAYS[0] : DAYS[DAYS.length - 1];
+    var daysLeft = Math.ceil((tripStart - now) / 86400000);
+    return { day: day, phase: phase, daysLeft: daysLeft };
   }
 
   function renderOverview(){
@@ -1004,18 +1002,27 @@
     wrap.innerHTML = '<table><thead><tr><th>日期</th><th>地點</th><th>重點</th></tr></thead><tbody>'+rows+'</tbody></table>';
   }
 
+  // Small banner above the day list. Purpose by phase:
+  //  before → countdown + says the first day is already expanded below
+  //  during → pins TODAY and its can't-miss (warn) times above the fold
+  //  after  → hidden (nothing useful to show)
   function renderToday(){
     var wrap = document.getElementById("akToday");
-    var picked = pickDay(), today = picked.day;
+    var p = pickDay(), today = p.day;
+    if(p.phase === "after"){ wrap.style.display = "none"; return; }
     var card = el("section", "ak-today-card");
-    card.innerHTML = '<p class="ak-today-title">'+picked.label+'</p><div class="ak-today-meta">'+today.date+'（'+today.dow+'）｜'+today.title+'</div>';
-    var hlWrap = el("div", "ak-today-hl");
-    today.hl.forEach(function(h){ hlWrap.appendChild(el("span", "ak-hl", h)); });
-    card.appendChild(hlWrap);
+    if(p.phase === "before"){
+      card.innerHTML = '<p class="ak-today-title">距出發還有 ' + p.daysLeft + ' 天</p>' +
+        '<div class="ak-today-meta">下方已自動展開第一天：' + today.date + '（' + today.dow + '）' + today.title + '</div>';
+      wrap.appendChild(card);
+      return;
+    }
+    card.innerHTML = '<p class="ak-today-title">今天 ' + today.date + '（' + today.dow + '）</p>' +
+      '<div class="ak-today-meta">' + today.title + '｜' + today.loc + '</div>';
     var warns = today.schedule.filter(function(r){ return r[3] === "warn" && r[1]; });
     if(warns.length){
       var list = el("ul", "ak-today-list");
-      warns.forEach(function(r){ list.appendChild(el("li", null, '<strong>'+r[0]+'</strong>　'+r[1])); });
+      warns.forEach(function(r){ list.appendChild(el("li", null, '<strong>' + r[0] + '</strong>　' + r[1])); });
       card.appendChild(list);
     }
     wrap.appendChild(card);
