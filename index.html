@@ -653,7 +653,7 @@
       hl: ["09:00 還車", "09:30–10:00 抵達碼頭", "16:00 離港"],
       schedule: [
         ["07:00","起床、退房、行李分流","護照/藥品/行動電源等隨身，不托運",""],
-        ["07:15","住處簡單早餐","咖啡＋9/17 Trader Joe's 買的貝果與抹醬；正式一餐是 13:00 船上 Garden Café",""],
+        ["07:15","住處早餐","咖啡＋9/17 Trader Joe's 買的貝果與抹醬，吃夠——登船排隊可能拖到接近中午；正式一餐是登船後的主餐廳午餐",""],
         ["07:40","前往 SIXT 還車","200 Pike St；市中心核心幾乎沒有加油站，最近是 Capitol Hill 的 76（Broadway & E Pike），往東上坡約 1 英里、回程順路。從住處出發時就先加滿更省事。預留市區車流與找入口時間",""],
         ["09:00","SIXT 還車","拍車身、油量、里程與收據後，確認隨身物品全數帶走；當日硬時間",K],
         ["09:00","計程車前往 Pier 66","2225 Alaskan Way；還車後不再保留車輛，避免時間壓力",""],
@@ -661,7 +661,7 @@
         ["10:00","過安檢、辦理報到","領房卡後即進入管制區、不再外出；購物已改到 9/26 Southcenter",""],
         ["10:30","候船大廳等待","坐著休息、確認 NCL App 與集合站資訊",""],
         ["12:00","開放登船","出示護照與 eDocs",""],
-        ["13:00","Garden Café 自助餐","登船後第一頓正餐",""],
+        ["13:00","登船第一餐：Taste／Savor 主餐廳","登船日中午自助餐是全航程人最多的一餐；主餐廳通常會開一間供 embarkation lunch（約 12:00–14:00），坐下吃、避開尖峰。沒開再退回 Garden Café",""],
         ["登船後","完成 eMuster 安全集合","用 NCL App（eMuster：登船當天的安全集合演練）看影片，再到指定 muster station 由船員掃房卡；開航前必須完成",K],
         ["14:00","All Aboard","開航前 2 小時，務必已在船上",K],
         ["16:00","Norwegian Bliss 離港","",""],
@@ -673,12 +673,12 @@
     {
       id: "d0920", date: "9/20", dow: "日", month: 9, day: 20,
       title: "海上航行日", loc: "Inside Passage",
-      badges: [[O,"Cagney's 已訂"],[P,"The Local 早餐待確認"]],
+      badges: [[O,"Cagney's 已訂"]],
       hl: ["熟悉船上動線", "19:15 Cagney's"],
       schedule: [
         ["早餐","The Local Bar & Grill","以當航次菜單與時段為準",P],
         ["上午","Observation Lounge","熟悉 Glacier Bay 觀景動線",""],
-        ["午餐","Taste","",""],
+        ["午餐","Taste（主餐廳，Deck 6）","三間主餐廳（Taste／Savor／Manhattan）每日菜單相同；已分排 9/20 午、9/22 晚、9/24 晚，三間都會踏到",""],
         ["19:15","Cagney's Steakhouse（Deck 8）","",O],
         ["晚間","查看隔日 Freestyle Daily","確認 Juneau 下船口與天候",""]
       ],
@@ -691,14 +691,15 @@
       badges: [[O,"官方行程 JNUN55 已訂"]],
       hl: ["14:30 靠港", "市區短逛購物", "16:30 出發"],
       schedule: [
-        ["早餐","Garden Café 快速早餐","午餐視 American Diner 營業狀況調整",""],
-        ["午餐","American Diner","須確認當日午餐營業",P],
+        ["早餐","主餐廳點餐早餐或 The Local","船 14:30 才靠港，早上不趕，換掉 Garden Café 坐下吃",""],
+        ["12:00–13:30","午餐：American Diner（Deck 17）或 Garden Café","American Diner 12:00 才開、à la carte 較慢，趕就 Garden Café；上船前吃完",""],
         ["14:30","靠港，依開放時間下船","靠港不等於可下船，排隊約 30–60 分鐘",""],
         ["下船後－15:40","碼頭／South Franklin Street 短逛購物","看港景、買紀念品；Tracy's 只有完全不用排隊時才外帶蟹湯／小點，要排隊就跳過",""],
         ["15:40","前往岸上行程集合點","停止購物，保留步行與集合緩衝",K],
         ["16:30","Mendenhall Glacier Explorer 出發","憑證行程時段 16:30–19:30，交通由 NCL 安排",O],
         ["19:30","跟團返回碼頭","憑證所載結束時間",""],
-        ["20:00","確認已回船","保守回船目標；Juneau 22:00 離港，正式 All Aboard 以 Freestyle Daily 為準",K]
+        ["20:00","確認已回船","保守回船目標；Juneau 22:00 離港，正式 All Aboard 以 Freestyle Daily 為準",K],
+        ["回船後","晚餐：The Local（24h）或 Garden Café","跑了一下午冰河行程，不排正式主餐廳",""]
       ],
       sights: [
         "Juneau 是全美唯一無法開車抵達的州府",
@@ -719,9 +720,10 @@
       hl: ["06:00 靠港", "07:30 出發（約 8h15m）", "20:00 離港"],
       schedule: [
         ["05:45","起床，確認已靠港","雨具、護照、行程票、行動電源隨身",""],
-        ["06:30","Garden Café 快速早餐","07:30 岸上行程，用餐後直接前往集合點",""],
-        ["07:30","White Pass Railway & Yukon Expedition","巴士去程、火車回程都優先坐右側靠窗",O],
+        ["06:30","Garden Café 快速早餐","港口早出、求快，這天不換餐廳；用餐後直接前往集合點",""],
+        ["07:30","White Pass Railway & Yukon Expedition","巴士去程、火車回程都優先坐右側靠窗；午餐已含在行程（Wild Adventure Yukon BBQ 雞肉＋甜甜圈），船上不用留",O],
         ["18:30","回船","",""],
+        ["晚餐","Manhattan Room（Deck 7 船尾）","三間主餐廳裡最大最正式、有樂團與大面窗；跑了 8 小時、太累就改 The Local／Garden Café",""],
         ["20:00","離港","",""]
       ],
       sights: [
@@ -743,17 +745,19 @@
       badges: [[O,"Le Bistro 已訂"]],
       hl: ["全天觀景", "19:15 Le Bistro"],
       schedule: [
-        ["清晨","查看 ranger 登船與進灣時間","以 App／Freestyle Daily 為準",""],
-        ["早餐","Garden Café 外帶","帶往 Observation Lounge",""],
-        ["上午","Observation Lounge 建立據點","輪流到戶外甲板",""],
-        ["下午","Deck 8 Waterfront 換邊追景","依廣播調整",""],
+        ["清晨","查看進灣與靠冰川時間","以 App／Freestyle Daily 為準（隨潮汐微調）",""],
+        ["8:00 前","到 Observation Lounge（Deck 15 船艏）卡位","巨型觀景廳，趁人潮還沒滿先占窗邊",""],
+        ["早餐","就在 Observation Lounge 拿免費輕食","麥片、優格、水果、丹麥麵包、瑪芬＋咖啡站，不用離開觀景位",""],
+        ["10:00–13:00","Margerie Glacier 峰值","船頂到冰川前只剩幾百公尺，常做慢速 360° 迴轉；聽冰裂、看崩冰。輪流到戶外甲板",O],
+        ["午餐","Observation Lounge 午間輕食","沙拉吧、手指三明治、冷肉起司、甜點；一樣不用離開觀景位",""],
+        ["下午","Deck 8 The Waterfront 換邊追景、聽 ranger 分享","船一路開出灣，ranger 約 15–16:00 下船",""],
         ["19:15","Le Bistro（Deck 17）","",O]
       ],
       sights: [
         "1750 年整個灣區被厚達 1,500 公尺的冰川覆蓋，250 年退縮 100 公里",
         "船可能靠近 Margerie Glacier 到只剩幾百公尺，能聽見冰裂聲"
       ],
-      safety: ["本次是內艙、沒有窗戶：Glacier Bay 當天別等房內廣播，早餐後直接去 Observation Lounge 卡位", "手機、相機電池低溫耗電快，行動電源放貼身口袋"]
+      safety: ["本次是內艙、沒有窗戶：Glacier Bay 當天別等房內廣播，8:00 前就到 Observation Lounge 占窗邊；該廳早、午都有免費輕食＋咖啡站，整天不用離開觀景位", "手機、相機電池低溫耗電快，行動電源放貼身口袋"]
     },
     {
       id: "d0924", date: "9/24", dow: "四", month: 9, day: 24,
@@ -765,7 +769,7 @@
         ["06:30","Garden Café 快速早餐","",""],
         ["07:30","Rainforest Sanctuary & Totem Park","約 3 小時 15 分",O],
         ["13:15","離港","無彈性，不安排市區快閃",K],
-        ["晚餐","Savor","",""]
+        ["晚餐","Savor（主餐廳，Deck 6）","與 Taste 是雙胞胎、菜單相同；下船前最後一次坐主餐廳",""]
       ],
       sights: [
         "年降雨量超過 150 英吋，幾乎是台北兩倍",
@@ -779,8 +783,8 @@
       badges: [[O,"官方行程 VICN61 已訂"]],
       hl: ["18:00 提早晚餐", "20:30 夜遊"],
       schedule: [
-        ["早餐","Garden Café","",""],
-        ["午餐","American Diner","須確認當日午餐營業",P],
+        ["早餐","主餐廳點餐早餐或 The Local","船晚上 8 點才靠港、整天從容，換掉 Garden Café",""],
+        ["午餐","American Diner（Deck 17）或 Garden Café","船晚上才靠港、整天從容；American Diner 免費、僅午餐約 12:00–17:00",""],
         ["下午","整理行李、確認標籤與帳單","最後一晚重要物品不托運",""],
         ["18:00","The Local 提早吃晚餐","不等夜遊後才找完整晚餐",""],
         ["20:30","Victoria Highlights By Night","約 2 小時 30 分",O],
@@ -921,7 +925,7 @@
       "取得岸上行程憑證，確認集合地點與時間",
       "完成安全集合站程序，記住艙房位置與逃生路線",
       "確認 Le Bistro／Cagney's 訂位",
-      "查 9/25 American Diner 是否供午餐",
+      "上船後查 App 確認 American Diner 當日餐期（Bliss 2026 免費、午餐約 12:00–17:00、無早餐；sea/port day 可能微調）",
       "設定 Wi-Fi 並練習正確 logout",
       "找到 Observation Lounge、Waterfront 與集合區"
     ]}
