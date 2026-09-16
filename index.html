@@ -676,7 +676,7 @@
         ["18:45","🍴 Le Bistro（Deck 17）","",O]
       ],
       sights: [],
-      safety: ["eDocs 指定抵達碼頭時段為 09:30–10:00，早到會被請回；12:00 開放登船，14:00（開航前 2 小時）前務必上船。09:00 準時還車，完成後直接搭計程車前往 Pier 66。", "登船安檢：瓶裝水／汽水／啤酒烈酒不能帶（含未開封）；密封葡萄酒每瓶收開瓶費 USD 15；大麻／CBD 一律禁，不論醫療用途"]
+      safety: ["eDocs 指定抵達碼頭時段為 09:30–10:00，早到會被請回；12:00 開放登船，14:00（開航前 2 小時）前務必上船。09:00 準時還車，完成後直接搭計程車前往 Pier 66。", "登船安檢：瓶裝水／汽水／啤酒烈酒不能帶（含未開封）；密封葡萄酒／香檳每瓶收開瓶費 USD 15（750ml）或 30（1500ml），符合條件的飲料方案可豁免；大麻／CBD 一律禁，不論醫療用途"]
     },
     {
       id: "d0920", date: "9/20", dow: "日", month: 9, day: 20,
@@ -828,7 +828,7 @@
       ],
       sights: [
         "館內的空軍一號（VC-137C）真的載過甘迺迪、詹森、尼克森等總統",
-        "T-Mobile Park 有可收合屋頂，應對西雅圖秋雨"
+        "T-Mobile Park 可收合屋頂因西雅圖秋雨而生（1999 年），是全美大聯盟第三座有頂棚的球場"
       ],
       options: ["若 10:00 還沒下船：砍 Southcenter 百貨、只留 BWW 午餐；15:00 入住到 18:40 球賽本來就有彈性（持台灣護照走非美籍通道通常較慢，10:00 前下不了船就直接執行）", "Museum of Flight 門票先線上買（週六現場排隊）"],
       safety: ["Bag Policy：透明袋限 12\"×6\"×12\"，出發前再查 MLB App", "臨行前用 MLB App 再確認 first pitch（列 18:40／6:40 PM PT，可能因轉播微調）"]
@@ -898,7 +898,7 @@
     ]},
     {icon:"i-book", title:"保險｜台灣產物", rows:[
       ["保障期間","9/17 05:00－9/29 05:00"],
-      ["醫療／後送","US$6,534 醫療・US$26,135－49,004 後送"],
+      ["醫療／後送","US$6,534 醫療・US$26,135 後送（本行程不涉及申根區，申根區的較高額度用不到）"],
       ["緊急聯絡","International SOS +886-2-6619-9205"],
       ["備註","保單號見離線備份的訂位文件"]
     ]},
@@ -911,8 +911,13 @@
 
   var CHECKLIST = [
     { tier:"打包", desc:"出發前物品檢查清單", items:[
-      "證件：護照正本×2（效期需涵蓋回程後 6 個月，約 2027/3 底前有效）、健保卡＋兩吋證件照2張、台灣駕照正本×2、國際駕照×2（效期至2029/7底）",
-      "財務：信用卡（依個人清單全帶）、國際提款卡、小額美金現金 USD 50–100",
+      "護照正本×2（效期需涵蓋回程後 6 個月，約 2027/3 底前有效）",
+      "健保卡＋兩吋證件照 2 張",
+      "台灣駕照正本×2",
+      "國際駕照×2（效期至 2029/7 底）",
+      "信用卡（依個人清單全帶）",
+      "國際提款卡",
+      "小額美金現金 USD 50–100",
       "文件：ESTA 核准畫面、旅遊保險保單、eDocs／行李條／岸上行程憑證／住宿與租車訂單",
       "電子：手機、手機掛繩、eSIM 已安裝確認（落地前才啟用，啟用碼另印紙本備援）、延長線／插頭（無突波保護）、充電線、行動電源",
       "健康：醫療包（處方藥原包裝、暈船藥、腸胃藥、備用眼鏡）",
@@ -951,6 +956,16 @@
     if(cls) e.className = cls;
     if(html !== undefined) e.innerHTML = html;
     return e;
+  }
+
+  function md(s){
+    return String(s == null ? "" : s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  }
+
+  function strHash(s){
+    var h = 0;
+    for(var i=0;i<s.length;i++){ h = (Math.imul(31,h) + s.charCodeAt(i))|0; }
+    return (h>>>0).toString(36);
   }
 
   function scrollToCard(card){
@@ -1065,7 +1080,7 @@
         var row = el("div", "ak-row" + (kind ? " kind-"+kind : ""));
         row.innerHTML =
           '<div class="ak-row-time">'+(r[0]||"")+'</div>' +
-          '<div><div class="ak-row-act">'+r[1]+'</div>' + (r[2] ? '<div class="ak-row-note">'+r[2]+'</div>' : '') + '</div>';
+          '<div><div class="ak-row-act">'+md(r[1])+'</div>' + (r[2] ? '<div class="ak-row-note">'+md(r[2])+'</div>' : '') + '</div>';
         sched.appendChild(row);
       });
       inner.appendChild(sched);
@@ -1074,7 +1089,7 @@
         var sBox = el("div", "ak-box");
         sBox.innerHTML = '<div class="ak-box-title"><svg class="icon"><use href="#i-book"/></svg>當日看點</div>';
         var ul = el("ul");
-        d.sights.forEach(function(s){ ul.appendChild(el("li", null, s)); });
+        d.sights.forEach(function(s){ ul.appendChild(el("li", null, md(s))); });
         sBox.appendChild(ul);
         inner.appendChild(sBox);
       }
@@ -1083,7 +1098,7 @@
         var oBox = el("div", "ak-box options");
         oBox.innerHTML = '<div class="ak-box-title"><svg class="icon"><use href="#i-tag"/></svg>備選</div>';
         var ul3 = el("ul");
-        d.options.forEach(function(o){ ul3.appendChild(el("li", null, o)); });
+        d.options.forEach(function(o){ ul3.appendChild(el("li", null, md(o))); });
         oBox.appendChild(ul3);
         inner.appendChild(oBox);
       }
@@ -1092,7 +1107,7 @@
         var wBox = el("div", "ak-box safety");
         wBox.innerHTML = '<div class="ak-box-title"><svg class="icon"><use href="#i-warn"/></svg>安全與提醒</div>';
         var ul2 = el("ul");
-        d.safety.forEach(function(s){ ul2.appendChild(el("li", null, s)); });
+        d.safety.forEach(function(s){ ul2.appendChild(el("li", null, md(s))); });
         wBox.appendChild(ul2);
         inner.appendChild(wBox);
       }
@@ -1112,7 +1127,7 @@
       var dl = el("dl");
       r.rows.forEach(function(row){
         dl.appendChild(el("dt", null, row[0]));
-        dl.appendChild(el("dd", null, row[1]));
+        dl.appendChild(el("dd", null, md(row[1])));
       });
       box.appendChild(dl);
       wrap.appendChild(box);
@@ -1131,14 +1146,14 @@
       box.appendChild(head);
       var list = el("div", "ak-check-list");
       tier.items.forEach(function(text, ii){
-        var itemId = "chk-"+ti+"-"+ii;
+        var itemId = "chk-"+ti+"-"+strHash(text);
         var checked = !!saved[itemId];
         var item = el("button", "ak-check-item" + (checked ? " checked" : ""));
         item.setAttribute("type", "button");
         item.setAttribute("aria-pressed", String(checked));
         item.innerHTML =
           '<span class="ak-stamp"><svg class="icon"><use href="#i-check"/></svg></span>' +
-          '<span class="ak-check-text">'+text+'</span>';
+          '<span class="ak-check-text">'+md(text)+'</span>';
         item.addEventListener("click", function(){
           var nowChecked = !item.classList.contains("checked");
           item.classList.toggle("checked", nowChecked);
